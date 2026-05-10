@@ -1,5 +1,10 @@
 streamlit
 pandas
+numpy
 matplotlib
-vaderSentiment
 scikit-learn
+vaderSentiment
+textblob
+pysentimiento
+torch
+transformers
