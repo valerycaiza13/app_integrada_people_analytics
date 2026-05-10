@@ -1,0 +1,201 @@
+id_empleado,nombre,departamento,puesto,fecha_ingreso,fecha_salida,motivo_baja,activo
+EMP-0001,Rubén Díaz,Operaciones,Analista,2025-05-06,2026-02-10,otro,No
+EMP-0002,Raúl Moya,Ventas,Analista,2022-02-26,2024-09-23,fin de contrato,No
+EMP-0003,Beatriz Ortega,Ventas,Analista,2022-02-13,,,Sí
+EMP-0004,Ana López,Finanzas,Director,2022-06-19,2023-03-26,jubilación,No
+EMP-0005,Laura Sánchez,Tecnología,Manager,2025-03-04,,,Sí
+EMP-0006,Alberto Blanco,Finanzas,Analista,2020-09-24,,,Sí
+EMP-0007,Claudia Vega,Marketing,Especialista,2024-03-20,2024-11-26,fin de contrato,No
+EMP-0008,Diego Navarro,Operaciones,Técnico,2018-01-12,2019-09-26,fin de contrato,No
+EMP-0009,Laura Sánchez,Marketing,Analista,2019-03-27,,,Sí
+EMP-0010,Pablo Jiménez,Ventas,Analista,2022-01-07,,,Sí
+EMP-0011,Patricia Herrero,Recursos Humanos,Director,2019-12-15,2021-06-16,jubilación,No
+EMP-0012,Lucía Peña,Ventas,Especialista,2018-09-18,,,Sí
+EMP-0013,Álvaro Ramos,Tecnología,Director,2024-08-28,2026-02-24,fin de contrato,No
+EMP-0014,Nuria Romero,Tecnología,Analista,2025-05-22,,,Sí
+EMP-0015,Rubén Díaz,Recursos Humanos,Coordinador,2023-05-16,,,Sí
+EMP-0016,Álvaro Ramos,Marketing,Analista,2022-12-22,2023-07-05,despido,No
+EMP-0017,Rosa Ibáñez,Ventas,Coordinador,2019-06-01,2026-01-22,otro,No
+EMP-0018,Nuria Romero,Legal,Analista,2024-09-12,,,Sí
+EMP-0019,Beatriz Ortega,Finanzas,Coordinador,2019-04-14,,,Sí
+EMP-0020,Rubén Díaz,Ventas,Coordinador,2023-01-24,,,Sí
+EMP-0021,Miguel García,Ventas,Coordinador,2022-06-22,,,Sí
+EMP-0022,Javier Morales,Marketing,Director,2021-07-04,,,Sí
+EMP-0023,Rubén Díaz,Recursos Humanos,Director,2023-04-27,2023-11-17,renuncia voluntaria,No
+EMP-0024,Diego Navarro,Tecnología,Especialista,2022-03-07,,,Sí
+EMP-0025,Fernando Calvo,Recursos Humanos,Coordinador,2024-04-19,,,Sí
+EMP-0026,Lucía Peña,Legal,Director,2021-12-19,,,Sí
+EMP-0027,Álvaro Ramos,Operaciones,Manager,2018-07-30,,,Sí
+EMP-0028,Elena Torres,Marketing,Director,2019-03-01,,,Sí
+EMP-0029,Raúl Moya,Ventas,Analista,2023-05-30,2024-02-05,despido,No
+EMP-0030,Alberto Blanco,Legal,Especialista,2021-02-15,,,Sí
+EMP-0031,Beatriz Ortega,Tecnología,Especialista,2024-12-21,,,Sí
+EMP-0032,Marta Ruiz,Tecnología,Técnico,2025-05-18,,,Sí
+EMP-0033,Sergio González,Ventas,Manager,2021-01-24,,,Sí
+EMP-0034,Fernando Calvo,Legal,Analista,2018-01-26,2019-10-04,otro,No
+EMP-0035,Laura Sánchez,Recursos Humanos,Director,2019-08-05,,,Sí
+EMP-0036,Claudia Vega,Marketing,Manager,2023-12-13,2025-03-16,jubilación,No
+EMP-0037,Lucía Peña,Recursos Humanos,Analista,2021-06-30,,,Sí
+EMP-0038,Marta Ruiz,Producto,Director,2019-09-30,2020-05-20,renuncia voluntaria,No
+EMP-0039,Nuria Romero,Legal,Manager,2022-10-03,,,Sí
+EMP-0040,Miguel García,Ventas,Coordinador,2020-06-01,,,Sí
+EMP-0041,Patricia Herrero,Operaciones,Analista,2019-03-31,2025-12-23,jubilación,No
+EMP-0042,Elena Torres,Operaciones,Técnico,2020-06-22,2021-03-03,renuncia voluntaria,No
+EMP-0043,Sergio González,Ventas,Analista,2019-07-17,,,Sí
+EMP-0044,Rubén Díaz,Marketing,Técnico,2018-02-01,,,Sí
+EMP-0045,Pablo Jiménez,Ventas,Analista,2022-04-07,,,Sí
+EMP-0046,Carlos Martínez,Legal,Analista,2022-06-15,,,Sí
+EMP-0047,Raúl Moya,Ventas,Especialista,2023-02-27,,,Sí
+EMP-0048,Rosa Ibáñez,Legal,Manager,2022-10-25,,,Sí
+EMP-0049,Claudia Vega,Marketing,Especialista,2019-04-17,,,Sí
+EMP-0050,Óscar León,Ventas,Analista,2023-02-28,,,Sí
+EMP-0051,Pablo Jiménez,Legal,Especialista,2022-11-24,,,Sí
+EMP-0052,Isabel Castro,Operaciones,Director,2022-06-29,,,Sí
+EMP-0053,Ana López,Recursos Humanos,Especialista,2021-10-22,2026-04-04,fin de contrato,No
+EMP-0054,Javier Morales,Marketing,Técnico,2023-09-20,2025-12-22,despido,No
+EMP-0055,Álvaro Ramos,Marketing,Director,2019-02-26,2021-06-13,fin de contrato,No
+EMP-0056,Nuria Romero,Producto,Director,2018-11-05,2025-12-20,jubilación,No
+EMP-0057,Álvaro Ramos,Ventas,Director,2024-05-01,,,Sí
+EMP-0058,Nuria Romero,Operaciones,Manager,2021-07-18,2022-01-03,jubilación,No
+EMP-0059,Sergio González,Producto,Coordinador,2024-08-19,2026-02-19,renuncia voluntaria,No
+EMP-0060,Beatriz Ortega,Recursos Humanos,Especialista,2018-06-04,2021-09-21,renuncia voluntaria,No
+EMP-0061,Nuria Romero,Tecnología,Coordinador,2024-08-30,,,Sí
+EMP-0062,Claudia Vega,Producto,Especialista,2024-05-30,,,Sí
+EMP-0063,Nuria Romero,Recursos Humanos,Manager,2019-09-10,,,Sí
+EMP-0064,David Rodríguez,Tecnología,Técnico,2018-12-12,,,Sí
+EMP-0065,Patricia Herrero,Marketing,Manager,2022-11-29,,,Sí
+EMP-0066,Isabel Castro,Legal,Manager,2022-03-08,,,Sí
+EMP-0067,Claudia Vega,Recursos Humanos,Especialista,2024-09-14,2025-09-21,renuncia voluntaria,No
+EMP-0068,Raúl Moya,Marketing,Manager,2022-05-03,2026-02-05,otro,No
+EMP-0069,Sofía Fernández,Ventas,Manager,2018-11-30,,,Sí
+EMP-0070,Isabel Castro,Marketing,Especialista,2025-05-11,,,Sí
+EMP-0071,Carmen Delgado,Marketing,Director,2018-12-14,2023-04-04,despido,No
+EMP-0072,Patricia Herrero,Ventas,Analista,2023-11-27,2025-11-12,jubilación,No
+EMP-0073,Lucía Peña,Producto,Técnico,2022-01-25,2023-05-08,despido,No
+EMP-0074,Sofía Fernández,Recursos Humanos,Manager,2020-07-16,,,Sí
+EMP-0075,Diego Navarro,Tecnología,Director,2019-02-19,,,Sí
+EMP-0076,Álvaro Ramos,Marketing,Especialista,2021-10-11,,,Sí
+EMP-0077,Alberto Blanco,Marketing,Director,2022-03-24,2023-04-28,otro,No
+EMP-0078,Nuria Romero,Operaciones,Director,2022-11-28,2025-01-12,fin de contrato,No
+EMP-0079,Alberto Blanco,Producto,Técnico,2023-01-13,2024-06-15,despido,No
+EMP-0080,Cristina Suárez,Producto,Coordinador,2022-02-15,,,Sí
+EMP-0081,Patricia Herrero,Legal,Técnico,2021-02-28,,,Sí
+EMP-0082,Sofía Fernández,Operaciones,Analista,2020-03-28,,,Sí
+EMP-0083,Javier Morales,Recursos Humanos,Director,2025-03-11,,,Sí
+EMP-0084,Sergio González,Recursos Humanos,Técnico,2023-10-15,,,Sí
+EMP-0085,Patricia Herrero,Marketing,Coordinador,2021-01-22,,,Sí
+EMP-0086,Pablo Jiménez,Producto,Manager,2019-01-11,,,Sí
+EMP-0087,Isabel Castro,Ventas,Técnico,2018-04-20,,,Sí
+EMP-0088,Javier Morales,Finanzas,Analista,2022-05-01,,,Sí
+EMP-0089,Carmen Delgado,Ventas,Técnico,2021-07-29,,,Sí
+EMP-0090,Lucía Peña,Producto,Coordinador,2019-07-18,2024-12-03,fin de contrato,No
+EMP-0091,Marta Ruiz,Finanzas,Técnico,2024-11-25,2025-02-03,renuncia voluntaria,No
+EMP-0092,Álvaro Ramos,Legal,Analista,2024-02-26,,,Sí
+EMP-0093,Pablo Jiménez,Legal,Director,2021-03-26,2021-12-30,renuncia voluntaria,No
+EMP-0094,Miguel García,Producto,Especialista,2024-12-26,,,Sí
+EMP-0095,Pablo Jiménez,Marketing,Manager,2024-01-05,2025-07-15,otro,No
+EMP-0096,Cristina Suárez,Legal,Técnico,2022-10-25,2024-11-15,fin de contrato,No
+EMP-0097,Javier Morales,Recursos Humanos,Especialista,2018-12-17,,,Sí
+EMP-0098,Patricia Herrero,Tecnología,Coordinador,2024-02-07,,,Sí
+EMP-0099,Marta Ruiz,Tecnología,Manager,2023-04-10,2025-07-10,despido,No
+EMP-0100,Lucía Peña,Ventas,Técnico,2018-10-04,2026-03-17,renuncia voluntaria,No
+EMP-0101,Carmen Delgado,Producto,Director,2018-07-01,2022-05-17,fin de contrato,No
+EMP-0102,Alberto Blanco,Marketing,Analista,2023-05-15,,,Sí
+EMP-0103,Alberto Blanco,Finanzas,Analista,2023-02-18,2024-05-05,renuncia voluntaria,No
+EMP-0104,Patricia Herrero,Legal,Especialista,2021-07-16,,,Sí
+EMP-0105,Javier Morales,Tecnología,Director,2023-04-24,2024-06-18,despido,No
+EMP-0106,Rubén Díaz,Legal,Director,2021-09-21,2026-04-15,despido,No
+EMP-0107,Isabel Castro,Ventas,Técnico,2022-12-07,,,Sí
+EMP-0108,Javier Morales,Operaciones,Analista,2023-07-26,,,Sí
+EMP-0109,Diego Navarro,Operaciones,Manager,2022-10-05,2026-03-21,fin de contrato,No
+EMP-0110,Nuria Romero,Legal,Técnico,2019-02-25,2022-07-19,despido,No
+EMP-0111,Álvaro Ramos,Legal,Manager,2022-12-24,2023-04-19,despido,No
+EMP-0112,Carlos Martínez,Recursos Humanos,Director,2025-03-04,,,Sí
+EMP-0113,Patricia Herrero,Marketing,Analista,2025-02-24,,,Sí
+EMP-0114,Fernando Calvo,Producto,Analista,2019-08-08,,,Sí
+EMP-0115,Isabel Castro,Tecnología,Especialista,2019-06-02,2023-08-10,despido,No
+EMP-0116,Javier Morales,Ventas,Coordinador,2019-09-21,,,Sí
+EMP-0117,Patricia Herrero,Ventas,Coordinador,2018-11-11,,,Sí
+EMP-0118,Pablo Jiménez,Recursos Humanos,Analista,2021-07-11,,,Sí
+EMP-0119,Isabel Castro,Recursos Humanos,Manager,2020-02-02,,,Sí
+EMP-0120,Elena Torres,Operaciones,Director,2020-12-02,,,Sí
+EMP-0121,Nuria Romero,Marketing,Director,2023-07-05,2023-12-20,renuncia voluntaria,No
+EMP-0122,Alberto Blanco,Ventas,Director,2022-12-29,,,Sí
+EMP-0123,Diego Navarro,Operaciones,Manager,2021-11-24,,,Sí
+EMP-0124,Óscar León,Marketing,Manager,2019-10-08,,,Sí
+EMP-0125,Pablo Jiménez,Producto,Analista,2023-09-15,2024-05-07,fin de contrato,No
+EMP-0126,Javier Morales,Producto,Especialista,2022-01-18,,,Sí
+EMP-0127,Ana López,Recursos Humanos,Manager,2019-06-16,,,Sí
+EMP-0128,Marcos Cano,Producto,Especialista,2022-06-19,,,Sí
+EMP-0129,Carmen Delgado,Recursos Humanos,Técnico,2022-08-10,,,Sí
+EMP-0130,Nuria Romero,Producto,Director,2021-07-22,,,Sí
+EMP-0131,Beatriz Ortega,Marketing,Técnico,2023-10-21,2026-03-17,otro,No
+EMP-0132,Raúl Moya,Tecnología,Analista,2022-11-08,,,Sí
+EMP-0133,Claudia Vega,Finanzas,Manager,2023-10-24,2024-05-09,fin de contrato,No
+EMP-0134,Raúl Moya,Recursos Humanos,Manager,2023-10-27,,,Sí
+EMP-0135,Diego Navarro,Operaciones,Técnico,2020-03-15,,,Sí
+EMP-0136,Patricia Herrero,Marketing,Especialista,2025-01-04,2025-11-03,renuncia voluntaria,No
+EMP-0137,Carmen Delgado,Tecnología,Analista,2024-07-06,2026-04-16,despido,No
+EMP-0138,Marta Ruiz,Finanzas,Especialista,2018-11-29,2026-03-09,otro,No
+EMP-0139,Laura Sánchez,Producto,Director,2022-09-03,,,Sí
+EMP-0140,Pablo Jiménez,Legal,Manager,2024-02-13,2025-01-17,jubilación,No
+EMP-0141,Nuria Romero,Legal,Coordinador,2023-02-01,2023-07-03,fin de contrato,No
+EMP-0142,Raúl Moya,Ventas,Director,2023-03-18,2024-02-05,despido,No
+EMP-0143,Sofía Fernández,Ventas,Especialista,2021-11-15,,,Sí
+EMP-0144,Miguel García,Operaciones,Coordinador,2024-04-19,2025-01-21,jubilación,No
+EMP-0145,Isabel Castro,Legal,Técnico,2020-10-12,2021-02-22,despido,No
+EMP-0146,Óscar León,Ventas,Técnico,2019-10-17,,,Sí
+EMP-0147,Patricia Herrero,Producto,Coordinador,2019-10-15,,,Sí
+EMP-0148,Ana López,Legal,Especialista,2021-06-17,,,Sí
+EMP-0149,Elena Torres,Ventas,Analista,2023-02-16,,,Sí
+EMP-0150,Sergio González,Tecnología,Analista,2018-07-27,2025-05-08,jubilación,No
+EMP-0151,Lucía Peña,Legal,Manager,2022-11-01,2024-05-25,despido,No
+EMP-0152,Cristina Suárez,Finanzas,Manager,2018-07-05,,,Sí
+EMP-0153,Nuria Romero,Operaciones,Especialista,2024-03-16,2025-05-15,otro,No
+EMP-0154,Isabel Castro,Ventas,Manager,2024-11-07,2026-04-20,renuncia voluntaria,No
+EMP-0155,Lucía Peña,Marketing,Técnico,2024-04-03,,,Sí
+EMP-0156,Patricia Herrero,Tecnología,Analista,2024-10-03,,,Sí
+EMP-0157,Patricia Herrero,Producto,Técnico,2018-06-09,2022-04-03,jubilación,No
+EMP-0158,Sofía Fernández,Ventas,Especialista,2024-10-19,,,Sí
+EMP-0159,Cristina Suárez,Ventas,Especialista,2021-07-28,2025-02-09,despido,No
+EMP-0160,Rosa Ibáñez,Operaciones,Coordinador,2023-09-19,,,Sí
+EMP-0161,Rubén Díaz,Operaciones,Director,2018-03-10,2025-10-28,renuncia voluntaria,No
+EMP-0162,Beatriz Ortega,Finanzas,Director,2025-01-21,2025-10-20,despido,No
+EMP-0163,David Rodríguez,Legal,Técnico,2018-07-30,,,Sí
+EMP-0164,Elena Torres,Tecnología,Coordinador,2020-09-19,2026-02-11,renuncia voluntaria,No
+EMP-0165,Rubén Díaz,Finanzas,Coordinador,2021-07-08,,,Sí
+EMP-0166,Óscar León,Producto,Director,2023-08-18,,,Sí
+EMP-0167,Patricia Herrero,Finanzas,Especialista,2018-09-13,,,Sí
+EMP-0168,Andrés Molina,Legal,Manager,2021-08-24,,,Sí
+EMP-0169,Diego Navarro,Ventas,Especialista,2019-12-11,,,Sí
+EMP-0170,Raúl Moya,Operaciones,Especialista,2021-12-22,,,Sí
+EMP-0171,Diego Navarro,Operaciones,Técnico,2023-06-07,2024-11-22,despido,No
+EMP-0172,Rosa Ibáñez,Finanzas,Director,2021-05-04,,,Sí
+EMP-0173,Óscar León,Operaciones,Manager,2023-06-26,2024-07-17,otro,No
+EMP-0174,Diego Navarro,Legal,Coordinador,2019-05-15,,,Sí
+EMP-0175,Alberto Blanco,Marketing,Manager,2021-11-14,,,Sí
+EMP-0176,Óscar León,Producto,Director,2018-06-22,2019-06-10,despido,No
+EMP-0177,Elena Torres,Finanzas,Especialista,2020-11-16,,,Sí
+EMP-0178,Rosa Ibáñez,Operaciones,Técnico,2021-01-15,,,Sí
+EMP-0179,Cristina Suárez,Finanzas,Técnico,2019-03-24,,,Sí
+EMP-0180,Patricia Herrero,Finanzas,Director,2018-07-27,,,Sí
+EMP-0181,Rosa Ibáñez,Producto,Analista,2020-08-11,2025-04-29,despido,No
+EMP-0182,Rubén Díaz,Producto,Coordinador,2019-07-18,2025-10-18,fin de contrato,No
+EMP-0183,Sergio González,Tecnología,Analista,2025-04-18,2025-10-12,despido,No
+EMP-0184,Diego Navarro,Tecnología,Técnico,2025-04-25,,,Sí
+EMP-0185,David Rodríguez,Tecnología,Coordinador,2022-09-08,,,Sí
+EMP-0186,Sandra Reyes,Tecnología,Analista,2023-07-23,2025-09-26,despido,No
+EMP-0187,Miguel García,Ventas,Manager,2021-05-07,,,Sí
+EMP-0188,Diego Navarro,Producto,Técnico,2023-02-05,,,Sí
+EMP-0189,Elena Torres,Recursos Humanos,Manager,2023-08-28,,,Sí
+EMP-0190,Beatriz Ortega,Operaciones,Director,2019-10-28,,,Sí
+EMP-0191,Cristina Suárez,Finanzas,Técnico,2020-02-02,2023-12-13,despido,No
+EMP-0192,Sandra Reyes,Legal,Coordinador,2024-11-07,,,Sí
+EMP-0193,David Rodríguez,Marketing,Coordinador,2023-10-12,2024-12-25,renuncia voluntaria,No
+EMP-0194,Laura Sánchez,Operaciones,Coordinador,2021-08-18,,,Sí
+EMP-0195,Marta Ruiz,Ventas,Manager,2020-08-22,,,Sí
+EMP-0196,Laura Sánchez,Operaciones,Director,2024-07-13,,,Sí
+EMP-0197,Carlos Martínez,Recursos Humanos,Coordinador,2022-01-12,,,Sí
+EMP-0198,Óscar León,Operaciones,Director,2021-06-10,2025-05-15,otro,No
+EMP-0199,Sergio González,Ventas,Especialista,2019-04-26,,,Sí
+EMP-0200,Sofía Fernández,Producto,Director,2020-06-23,2022-01-21,jubilación,No

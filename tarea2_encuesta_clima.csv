@@ -1,0 +1,151 @@
+id_respuesta,departamento,antiguedad_anios,nivel,pregunta,comentario,sentimiento_real
+1,Producto,13,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+2,Marketing,1,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa ofrece muchas oportunidades de crecimiento y desarrollo profesional.,positivo
+3,Legal,4,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+4,Ventas,6,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+5,Legal,4,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+6,Legal,0,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+7,Legal,7,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+8,Legal,1,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa ofrece muchas oportunidades de crecimiento y desarrollo profesional.,positivo
+9,Ventas,9,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+10,Legal,10,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Estoy muy satisfecho con mi puesto, los proyectos son desafiantes y motivadores.",positivo
+11,Ventas,12,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi rol tiene partes interesantes y partes rutinarias, es un balance.",neutro
+12,Recursos Humanos,8,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+13,Tecnología,3,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+14,Legal,3,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+15,Operaciones,1,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La empresa está en proceso de cambio, habrá que ver cómo evoluciona.",neutro
+16,Finanzas,11,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+17,Ventas,3,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+18,Ventas,12,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+19,Legal,12,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,Las oportunidades de promoción son escasas y los criterios no son claros.,negativo
+20,Legal,0,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+21,Ventas,14,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+22,Producto,5,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Estoy muy satisfecho con mi puesto, los proyectos son desafiantes y motivadores.",positivo
+23,Ventas,2,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,El onboarding fue impecable y me sentí integrado desde el primer día.,positivo
+24,Finanzas,4,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Las oportunidades de promoción son escasas y los criterios no son claros.,negativo
+25,Recursos Humanos,14,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+26,Finanzas,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me adapto bien al trabajo, aunque la carga varía bastante según el mes.",neutro
+27,Tecnología,3,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El liderazgo es cercano y accesible, hay mucha transparencia en la comunicación.",positivo
+28,Producto,1,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+29,Producto,4,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa ofrece muchas oportunidades de crecimiento y desarrollo profesional.,positivo
+30,Ventas,14,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La dirección no escucha las sugerencias de los empleados, hay poca participación.",negativo
+31,Legal,14,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi relación con mi responsable directo es correcta, sin grandes problemas.",neutro
+32,Producto,8,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+33,Producto,7,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi rol tiene partes interesantes y partes rutinarias, es un balance.",neutro
+34,Finanzas,8,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equilibrio entre vida personal y trabajo es excelente, se valora el bienestar.",positivo
+35,Recursos Humanos,4,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+36,Finanzas,2,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El liderazgo es cercano y accesible, hay mucha transparencia en la comunicación.",positivo
+37,Producto,13,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+38,Legal,0,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+39,Ventas,9,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+40,Finanzas,15,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Hay iniciativas de mejora en marcha, aunque aún no se ven resultados claros.",neutro
+41,Tecnología,12,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+42,Marketing,14,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+43,Tecnología,12,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi relación con mi responsable directo es correcta, sin grandes problemas.",neutro
+44,Recursos Humanos,13,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La carga de trabajo es excesiva y no se respeta el horario de salida.,negativo
+45,Tecnología,8,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+46,Ventas,10,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+47,Operaciones,2,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+48,Tecnología,11,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+49,Tecnología,7,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La carga de trabajo es excesiva y no se respeta el horario de salida.,negativo
+50,Marketing,7,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me adapto bien al trabajo, aunque la carga varía bastante según el mes.",neutro
+51,Finanzas,14,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La comunicación entre departamentos es muy deficiente, hay muchos silos.",negativo
+52,Recursos Humanos,5,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+53,Operaciones,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+54,Recursos Humanos,7,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La empresa está en proceso de cambio, habrá que ver cómo evoluciona.",neutro
+55,Recursos Humanos,1,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+56,Recursos Humanos,10,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+57,Recursos Humanos,13,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El trabajo remoto funciona, aunque la comunicación podría ser más fluida.",neutro
+58,Marketing,13,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+59,Producto,14,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+60,Operaciones,10,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me adapto bien al trabajo, aunque la carga varía bastante según el mes.",neutro
+61,Operaciones,14,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equipo es heterogéneo, hay días buenos y días más complicados.",neutro
+62,Legal,10,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,El sueldo está por debajo del mercado y no hay revisión salarial anual.,negativo
+63,Marketing,15,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+64,Ventas,8,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equilibrio entre vida personal y trabajo es excelente, se valora el bienestar.",positivo
+65,Tecnología,6,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+66,Producto,7,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+67,Producto,0,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+68,Finanzas,9,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+69,Ventas,13,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+70,Operaciones,9,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+71,Ventas,3,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Estoy muy satisfecho con mi puesto, los proyectos son desafiantes y motivadores.",positivo
+72,Finanzas,6,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+73,Operaciones,3,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,El onboarding fue impecable y me sentí integrado desde el primer día.,positivo
+74,Marketing,9,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+75,Operaciones,1,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+76,Producto,3,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+77,Producto,14,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+78,Operaciones,15,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+79,Producto,2,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Hay iniciativas de mejora en marcha, aunque aún no se ven resultados claros.",neutro
+80,Marketing,4,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,La carga de trabajo es excesiva y no se respeta el horario de salida.,negativo
+81,Finanzas,3,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equipo es heterogéneo, hay días buenos y días más complicados.",neutro
+82,Finanzas,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,El sueldo está por debajo del mercado y no hay revisión salarial anual.,negativo
+83,Legal,9,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi rol tiene partes interesantes y partes rutinarias, es un balance.",neutro
+84,Recursos Humanos,6,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,El sueldo está por debajo del mercado y no hay revisión salarial anual.,negativo
+85,Marketing,7,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa ofrece muchas oportunidades de crecimiento y desarrollo profesional.,positivo
+86,Tecnología,13,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+87,Operaciones,1,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+88,Producto,2,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equilibrio entre vida personal y trabajo es excelente, se valora el bienestar.",positivo
+89,Finanzas,13,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me adapto bien al trabajo, aunque la carga varía bastante según el mes.",neutro
+90,Operaciones,4,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+91,Operaciones,14,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equilibrio entre vida personal y trabajo es excelente, se valora el bienestar.",positivo
+92,Legal,8,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+93,Recursos Humanos,1,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+94,Operaciones,0,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,El sueldo está por debajo del mercado y no hay revisión salarial anual.,negativo
+95,Tecnología,8,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,El onboarding fue impecable y me sentí integrado desde el primer día.,positivo
+96,Producto,14,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El liderazgo es cercano y accesible, hay mucha transparencia en la comunicación.",positivo
+97,Legal,15,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,El onboarding fue impecable y me sentí integrado desde el primer día.,positivo
+98,Ventas,10,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+99,Legal,15,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La cultura organizacional está en construcción, se nota un esfuerzo.",neutro
+100,Tecnología,14,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+101,Recursos Humanos,12,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+102,Producto,13,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El trabajo está bien, aunque hay cosas que podrían mejorar en los procesos.",neutro
+103,Producto,14,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+104,Marketing,9,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+105,Recursos Humanos,0,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El trabajo remoto funciona, aunque la comunicación podría ser más fluida.",neutro
+106,Operaciones,0,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+107,Recursos Humanos,14,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Estoy muy satisfecho con mi puesto, los proyectos son desafiantes y motivadores.",positivo
+108,Producto,9,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+109,Producto,15,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+110,Legal,6,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+111,Recursos Humanos,8,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,No se reconoce el trabajo bien hecho y la gestión del desempeño es opaca.,negativo
+112,Operaciones,0,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+113,Producto,4,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,El sueldo está por debajo del mercado y no hay revisión salarial anual.,negativo
+114,Ventas,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+115,Finanzas,12,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La empresa está en proceso de cambio, habrá que ver cómo evoluciona.",neutro
+116,Tecnología,10,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Hay iniciativas de mejora en marcha, aunque aún no se ven resultados claros.",neutro
+117,Legal,4,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+118,Ventas,3,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+119,Tecnología,4,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+120,Recursos Humanos,15,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Las condiciones son aceptables, no tengo quejas graves pero tampoco elogios.",neutro
+121,Recursos Humanos,10,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+122,Producto,1,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+123,Finanzas,2,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equilibrio entre vida personal y trabajo es excelente, se valora el bienestar.",positivo
+124,Producto,5,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El equipo es heterogéneo, hay días buenos y días más complicados.",neutro
+125,Ventas,1,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El trabajo está bien, aunque hay cosas que podrían mejorar en los procesos.",neutro
+126,Marketing,7,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+127,Marketing,5,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El liderazgo es cercano y accesible, hay mucha transparencia en la comunicación.",positivo
+128,Finanzas,15,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,Existe una brecha enorme entre lo que dice la empresa y lo que practica.,negativo
+129,Operaciones,14,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+130,Operaciones,5,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+131,Operaciones,13,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me siento valorado y reconocido por mi trabajo, hay una cultura de feedback continuo.",positivo
+132,Finanzas,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+133,Ventas,9,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+134,Operaciones,0,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los beneficios y el salario son competitivos, me siento bien compensado.",positivo
+135,Producto,9,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El trabajo está bien, aunque hay cosas que podrían mejorar en los procesos.",neutro
+136,Finanzas,6,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Los procesos internos son demasiado lentos y burocrático, frustrante.",negativo
+137,Recursos Humanos,1,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El liderazgo es cercano y accesible, hay mucha transparencia en la comunicación.",positivo
+138,Ventas,4,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,La carga de trabajo es excesiva y no se respeta el horario de salida.,negativo
+139,Legal,5,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La cultura organizacional está en construcción, se nota un esfuerzo.",neutro
+140,Ventas,8,Mid,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+141,Operaciones,10,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,Hay un espíritu de colaboración y apoyo muy sano entre los compañeros.,positivo
+142,Marketing,7,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"La comunicación entre departamentos es muy deficiente, hay muchos silos.",negativo
+143,Ventas,2,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Mi relación con mi responsable directo es correcta, sin grandes problemas.",neutro
+144,Recursos Humanos,14,Senior,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
+145,Legal,11,Junior,¿Cómo describirías tu experiencia trabajando en esta empresa?,"El ambiente es bastante competitivo y poco colaborativo, genera estrés.",negativo
+146,Tecnología,10,Director,¿Cómo describirías tu experiencia trabajando en esta empresa?,"No hay flexibilidad horaria ni opciones de trabajo remoto, se siente rígido.",negativo
+147,Producto,9,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa ofrece muchas oportunidades de crecimiento y desarrollo profesional.,positivo
+148,Tecnología,9,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Me encanta el ambiente de trabajo, el equipo siempre está dispuesto a ayudar.",positivo
+149,Marketing,12,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,"Estoy muy satisfecho con mi puesto, los proyectos son desafiantes y motivadores.",positivo
+150,Legal,4,Manager,¿Cómo describirías tu experiencia trabajando en esta empresa?,La empresa invierte en formación y se nota el compromiso con el talento.,positivo
