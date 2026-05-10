@@ -1,7 +1,7 @@
 # =============================================================
 # PEOPLE ANALYTICS DASHBOARD — 3 TAREAS INTEGRADAS
 # Tarea 1: Extracción de skills en CVs
-# Tarea 2: Análisis de sentimiento con VADER
+# Tarea 2: Análisis de sentimiento con pysentimiento + comparación VADER/TextBlob
 # Tarea 3: Rotación mensual
 # =============================================================
 
@@ -11,6 +11,7 @@ import numpy as np
 import re
 import matplotlib.pyplot as plt
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from textblob import TextBlob
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 # -------------------------------------------------------------
@@ -245,10 +246,30 @@ with tab1:
         st.info("Sube el archivo CSV de la Tarea 1 para iniciar el análisis.")
 
 # =============================================================
-# TAREA 2 — ANÁLISIS DE SENTIMIENTO CON VADER
+# TAREA 2 — ANÁLISIS DE SENTIMIENTO CON PYSENTIMIENTO
 # =============================================================
 
 vader = SentimentIntensityAnalyzer()
+
+@st.cache_resource(show_spinner=False)
+def cargar_modelo_pysentimiento():
+    """Carga el modelo de pysentimiento una sola vez para no hacerlo en cada refresh."""
+    try:
+        from pysentimiento import create_analyzer
+        return create_analyzer(task="sentiment", lang="es")
+    except Exception as e:
+        return None
+
+
+def clasificar_textblob(texto):
+    score = TextBlob(str(texto)).sentiment.polarity
+    if score > 0.05:
+        return "positivo"
+    elif score < -0.05:
+        return "negativo"
+    else:
+        return "neutro"
+
 
 def clasificar_vader(texto):
     score = vader.polarity_scores(str(texto))["compound"]
@@ -262,6 +283,12 @@ def clasificar_vader(texto):
 
 def score_vader(texto):
     return vader.polarity_scores(str(texto))["compound"]
+
+
+def clasificar_pysentimiento(texto, analizador):
+    resultado = analizador.predict(str(texto)).output
+    mapeo = {"POS": "positivo", "NEG": "negativo", "NEU": "neutro"}
+    return mapeo.get(resultado, "neutro")
 
 
 def resumen_sentimiento(df, columna_grupo, columna_sentimiento):
@@ -280,7 +307,10 @@ def resumen_sentimiento(df, columna_grupo, columna_sentimiento):
 
 with tab2:
     st.header("Tarea 2 — Análisis de Sentimiento en Encuestas de Clima Laboral")
-    st.write("Clasificación de comentarios como positivos, negativos o neutros usando VADER, con comparación frente al sentimiento real.")
+    st.write(
+        "Dashboard de sentimiento con **pysentimiento como modelo principal** porque está entrenado para español. "
+        "TextBlob y VADER se mantienen como comparación de precisión."
+    )
 
     uploaded_file2 = st.file_uploader("Sube el archivo tarea2_encuesta_clima.csv", type=["csv"], key="csv_tarea2")
 
@@ -288,16 +318,33 @@ with tab2:
         df2 = pd.read_csv(uploaded_file2)
         validar_columnas(df2, ["id_respuesta", "departamento", "nivel", "comentario", "sentimiento_real"], "Tarea 2")
 
-        df2["vader_score"] = df2["comentario"].apply(score_vader)
-        df2["sentimiento_predicho_vader"] = df2["comentario"].apply(clasificar_vader)
+        analizador_es = cargar_modelo_pysentimiento()
+        if analizador_es is None:
+            st.error(
+                "No se pudo cargar pysentimiento. Instala la librería con: pip install pysentimiento "
+                "y vuelve a ejecutar Streamlit."
+            )
+            st.stop()
 
-        precision = accuracy_score(df2["sentimiento_real"], df2["sentimiento_predicho_vader"])
+        with st.spinner("Clasificando comentarios con TextBlob, VADER y pysentimiento..."):
+            df2["pred_textblob"] = df2["comentario"].apply(clasificar_textblob)
+            df2["vader_score"] = df2["comentario"].apply(score_vader)
+            df2["pred_vader"] = df2["comentario"].apply(clasificar_vader)
+            df2["pred_pysentimiento"] = df2["comentario"].apply(lambda x: clasificar_pysentimiento(x, analizador_es))
+
+        acc_textblob = accuracy_score(df2["sentimiento_real"], df2["pred_textblob"])
+        acc_vader = accuracy_score(df2["sentimiento_real"], df2["pred_vader"])
+        acc_pys = accuracy_score(df2["sentimiento_real"], df2["pred_pysentimiento"])
+
+        modelo_principal = "pred_pysentimiento"
+        precision_principal = acc_pys
 
         dist_real = df2["sentimiento_real"].value_counts()
+        dist_pys = df2[modelo_principal].value_counts()
         total = len(df2)
-        positivos = dist_real.get("positivo", 0)
-        negativos = dist_real.get("negativo", 0)
-        neutros = dist_real.get("neutro", 0)
+        positivos = dist_pys.get("positivo", 0)
+        negativos = dist_pys.get("negativo", 0)
+        neutros = dist_pys.get("neutro", 0)
 
         pct_pos = positivos / total * 100
         pct_neg = negativos / total * 100
@@ -305,28 +352,49 @@ with tab2:
 
         c1, c2, c3, c4, c5 = st.columns(5)
         c1.metric("Respuestas", total)
-        c2.metric("Positivos reales", f"{pct_pos:.1f}%", f"{positivos} comentarios")
-        c3.metric("Negativos reales", f"{pct_neg:.1f}%", f"{negativos} comentarios")
-        c4.metric("Neutros reales", f"{pct_neu:.1f}%", f"{neutros} comentarios")
-        c5.metric("Precisión VADER", f"{precision:.1%}")
+        c2.metric("Positivos detectados", f"{pct_pos:.1f}%", f"{positivos} comentarios")
+        c3.metric("Negativos detectados", f"{pct_neg:.1f}%", f"{negativos} comentarios")
+        c4.metric("Neutros detectados", f"{pct_neu:.1f}%", f"{neutros} comentarios")
+        c5.metric("Accuracy pysentimiento", f"{precision_principal:.1%}")
 
-        resumen_depto_real = resumen_sentimiento(df2, "departamento", "sentimiento_real")
-        resumen_nivel_real = resumen_sentimiento(df2, "nivel", "sentimiento_real")
-        resumen_depto_vader = resumen_sentimiento(df2, "departamento", "sentimiento_predicho_vader")
+        st.subheader("Comparación de modelos")
+        comparacion_modelos = pd.DataFrame({
+            "modelo": ["TextBlob", "VADER", "pysentimiento"],
+            "enfoque": ["Léxico general / inglés", "Léxico social / inglés", "Modelo NLP nativo en español"],
+            "accuracy": [acc_textblob, acc_vader, acc_pys]
+        }).sort_values("accuracy", ascending=False)
+        comparacion_modelos["accuracy_%"] = (comparacion_modelos["accuracy"] * 100).round(1)
 
-        depto_mas_positivo = resumen_depto_real.sort_values("pct_positivo", ascending=False).iloc[0]
-        depto_mas_negativo = resumen_depto_real.sort_values("pct_negativo", ascending=False).iloc[0]
-        nivel_mas_positivo = resumen_nivel_real.sort_values("pct_positivo", ascending=False).iloc[0]
-        nivel_mas_negativo = resumen_nivel_real.sort_values("pct_negativo", ascending=False).iloc[0]
+        col_m1, col_m2 = st.columns([1, 1])
+        with col_m1:
+            st.dataframe(comparacion_modelos[["modelo", "enfoque", "accuracy_%"]], use_container_width=True)
+        with col_m2:
+            fig_acc, ax_acc = plt.subplots(figsize=(7, 4))
+            datos_acc = comparacion_modelos.sort_values("accuracy_%", ascending=True)
+            ax_acc.barh(datos_acc["modelo"], datos_acc["accuracy_%"])
+            ax_acc.set_xlabel("Accuracy (%)")
+            ax_acc.set_title("Precisión por modelo")
+            ax_acc.set_xlim(0, 100)
+            for i, v in enumerate(datos_acc["accuracy_%"]):
+                ax_acc.text(v + 1, i, f"{v:.1f}%", va="center", fontsize=9)
+            st.pyplot(fig_acc)
+
+        resumen_depto_pys = resumen_sentimiento(df2, "departamento", modelo_principal)
+        resumen_nivel_pys = resumen_sentimiento(df2, "nivel", modelo_principal)
+
+        depto_mas_positivo = resumen_depto_pys.sort_values("pct_positivo", ascending=False).iloc[0]
+        depto_mas_negativo = resumen_depto_pys.sort_values("pct_negativo", ascending=False).iloc[0]
+        nivel_mas_positivo = resumen_nivel_pys.sort_values("pct_positivo", ascending=False).iloc[0]
+        nivel_mas_negativo = resumen_nivel_pys.sort_values("pct_negativo", ascending=False).iloc[0]
 
         st.subheader("Insights ejecutivos para el CHRO")
         col_pos, col_neg = st.columns(2)
         with col_pos:
             st.markdown(f"""
             <div class="positive-box">
-            <b>Fortaleza positiva detectada</b><br>
+            <b>Fortaleza positiva detectada por pysentimiento</b><br>
             El departamento con mayor sentimiento positivo es <b>{depto_mas_positivo['departamento']}</b>
-            con <b>{depto_mas_positivo['pct_positivo']:.1f}%</b> de comentarios positivos.
+            con <b>{depto_mas_positivo['pct_positivo']:.1f}%</b> de comentarios positivos.<br>
             El nivel con mejor percepción es <b>{nivel_mas_positivo['nivel']}</b>
             con <b>{nivel_mas_positivo['pct_positivo']:.1f}%</b> positivo.
             </div>
@@ -334,9 +402,9 @@ with tab2:
         with col_neg:
             st.markdown(f"""
             <div class="warning-box">
-            <b>Foco de atención</b><br>
+            <b>Foco de atención detectado por pysentimiento</b><br>
             El departamento con mayor sentimiento negativo es <b>{depto_mas_negativo['departamento']}</b>
-            con <b>{depto_mas_negativo['pct_negativo']:.1f}%</b> de comentarios negativos.
+            con <b>{depto_mas_negativo['pct_negativo']:.1f}%</b> de comentarios negativos.<br>
             El nivel más afectado es <b>{nivel_mas_negativo['nivel']}</b>
             con <b>{nivel_mas_negativo['pct_negativo']:.1f}%</b> negativo.
             </div>
@@ -345,41 +413,40 @@ with tab2:
         st.markdown(f"""
         <div class="insight-box">
         <b>Lectura del modelo:</b><br>
-        VADER alcanza una precisión de <b>{precision:.1%}</b>. Como VADER fue diseñado principalmente para inglés,
-        puede fallar con matices en español. Por eso, para la decisión de clima se muestran los resultados reales del dataset
-        y también la predicción automática para evaluar qué tan confiable es el modelo.
+        En este dashboard, <b>pysentimiento</b> se usa como modelo principal porque está diseñado para español y obtuvo una precisión de
+        <b>{acc_pys:.1%}</b>. VADER se mantiene como benchmark, pero su precisión fue de <b>{acc_vader:.1%}</b>, por lo que puede perder matices
+        en comentarios escritos en español. La mejora de pysentimiento frente a VADER es de <b>{(acc_pys - acc_vader) * 100:.1f}</b> puntos porcentuales.
         </div>
         """, unsafe_allow_html=True)
 
-        st.subheader("Distribución real vs predicción VADER")
+        st.subheader("Distribución de sentimiento: real vs pysentimiento")
         labels = ["negativo", "neutro", "positivo"]
         real_vals = [df2["sentimiento_real"].value_counts().get(l, 0) for l in labels]
-        pred_vals = [df2["sentimiento_predicho_vader"].value_counts().get(l, 0) for l in labels]
+        pys_vals = [df2[modelo_principal].value_counts().get(l, 0) for l in labels]
 
         fig1, ax1 = plt.subplots(figsize=(9, 5))
         x = np.arange(len(labels))
         width = 0.35
         ax1.bar(x - width/2, real_vals, width, label="Real")
-        ax1.bar(x + width/2, pred_vals, width, label="Predicho VADER")
+        ax1.bar(x + width/2, pys_vals, width, label="Predicho pysentimiento")
         ax1.set_xticks(x)
         ax1.set_xticklabels(labels)
         ax1.set_ylabel("Número de comentarios")
-        ax1.set_title("Distribución de sentimiento: real vs VADER")
+        ax1.set_title("Distribución: real vs predicción principal")
         ax1.legend()
         for container in ax1.containers:
             ax1.bar_label(container, fontsize=9)
         st.pyplot(fig1)
 
         col_g1, col_g2 = st.columns(2)
-
         with col_g1:
             st.subheader("% positivo por departamento")
-            datos_pos = resumen_depto_real.sort_values("pct_positivo", ascending=True)
+            datos_pos = resumen_depto_pys.sort_values("pct_positivo", ascending=True)
             fig2, ax2 = plt.subplots(figsize=(8, 5))
             ax2.barh(datos_pos["departamento"], datos_pos["pct_positivo"])
             ax2.axvline(pct_pos, linestyle="--", alpha=0.6, label=f"Media global {pct_pos:.1f}%")
             ax2.set_xlabel("% positivo")
-            ax2.set_title("Departamentos con mayor clima positivo")
+            ax2.set_title("Clima positivo por departamento")
             ax2.legend()
             for i, v in enumerate(datos_pos["pct_positivo"]):
                 ax2.text(v + 0.5, i, f"{v:.1f}%", va="center", fontsize=9)
@@ -387,12 +454,12 @@ with tab2:
 
         with col_g2:
             st.subheader("% negativo por departamento")
-            datos_neg = resumen_depto_real.sort_values("pct_negativo", ascending=True)
+            datos_neg = resumen_depto_pys.sort_values("pct_negativo", ascending=True)
             fig3, ax3 = plt.subplots(figsize=(8, 5))
             ax3.barh(datos_neg["departamento"], datos_neg["pct_negativo"])
             ax3.axvline(pct_neg, linestyle="--", alpha=0.6, label=f"Media global {pct_neg:.1f}%")
             ax3.set_xlabel("% negativo")
-            ax3.set_title("Departamentos con mayor foco de atención")
+            ax3.set_title("Focos de atención por departamento")
             ax3.legend()
             for i, v in enumerate(datos_neg["pct_negativo"]):
                 ax3.text(v + 0.5, i, f"{v:.1f}%", va="center", fontsize=9)
@@ -400,31 +467,31 @@ with tab2:
 
         col_n1, col_n2 = st.columns(2)
         with col_n1:
-            st.subheader("Sentimiento por nivel")
+            st.subheader("Sentimiento por nivel — pysentimiento")
             st.dataframe(
-                resumen_nivel_real[["nivel", "negativo", "neutro", "positivo", "pct_negativo", "pct_positivo"]]
+                resumen_nivel_pys[["nivel", "negativo", "neutro", "positivo", "pct_negativo", "pct_neutro", "pct_positivo"]]
                 .sort_values("pct_negativo", ascending=False),
                 use_container_width=True
             )
         with col_n2:
-            st.subheader("Sentimiento por departamento")
+            st.subheader("Sentimiento por departamento — pysentimiento")
             st.dataframe(
-                resumen_depto_real[["departamento", "negativo", "neutro", "positivo", "pct_negativo", "pct_positivo"]]
+                resumen_depto_pys[["departamento", "negativo", "neutro", "positivo", "pct_negativo", "pct_neutro", "pct_positivo"]]
                 .sort_values("pct_negativo", ascending=False),
                 use_container_width=True
             )
 
-        st.subheader("Matriz de confusión — VADER")
-        cm = confusion_matrix(df2["sentimiento_real"], df2["sentimiento_predicho_vader"], labels=labels)
+        st.subheader("Matriz de confusión — pysentimiento")
+        cm = confusion_matrix(df2["sentimiento_real"], df2[modelo_principal], labels=labels)
         fig4, ax4 = plt.subplots(figsize=(6, 5))
         im = ax4.imshow(cm)
         ax4.set_xticks(np.arange(len(labels)))
         ax4.set_yticks(np.arange(len(labels)))
         ax4.set_xticklabels(labels)
         ax4.set_yticklabels(labels)
-        ax4.set_xlabel("Predicho VADER")
+        ax4.set_xlabel("Predicho pysentimiento")
         ax4.set_ylabel("Real")
-        ax4.set_title("Matriz de confusión")
+        ax4.set_title("Matriz de confusión del modelo principal")
         for i in range(len(labels)):
             for j in range(len(labels)):
                 ax4.text(j, i, cm[i, j], ha="center", va="center", color="white" if cm[i, j] > cm.max()/2 else "black")
@@ -432,20 +499,20 @@ with tab2:
         st.pyplot(fig4)
 
         st.subheader("Acciones sugeridas")
-        st.write(f"1. Replicar buenas prácticas del departamento **{depto_mas_positivo['departamento']}**, donde se observa mayor sentimiento positivo.")
+        st.write(f"1. Replicar buenas prácticas del departamento **{depto_mas_positivo['departamento']}**, donde pysentimiento detecta el mayor clima positivo.")
         st.write(f"2. Priorizar sesiones de escucha en **{depto_mas_negativo['departamento']}**, por ser el departamento con mayor porcentaje negativo.")
-        st.write(f"3. Analizar comentarios del nivel **{nivel_mas_negativo['nivel']}** para entender si el problema se relaciona con liderazgo, carga laboral, comunicación o desarrollo.")
+        st.write(f"3. Analizar comentarios del nivel **{nivel_mas_negativo['nivel']}** para identificar si el foco está en carga laboral, liderazgo, comunicación o desarrollo.")
 
-        with st.expander("Ver comentarios clasificados"):
+        with st.expander("Ver comentarios clasificados por los 3 modelos"):
             st.dataframe(df2[[
-                "id_respuesta", "departamento", "nivel", "comentario",
-                "sentimiento_real", "vader_score", "sentimiento_predicho_vader"
+                "id_respuesta", "departamento", "nivel", "comentario", "sentimiento_real",
+                "pred_textblob", "vader_score", "pred_vader", "pred_pysentimiento"
             ]], use_container_width=True)
 
         st.download_button(
             label="Descargar resultados de sentimiento",
             data=df2.to_csv(index=False).encode("utf-8"),
-            file_name="resultados_sentimiento_vader.csv",
+            file_name="resultados_sentimiento_pysentimiento.csv",
             mime="text/csv"
         )
 
