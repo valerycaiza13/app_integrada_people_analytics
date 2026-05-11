@@ -296,8 +296,7 @@ with tab1:
         st.pyplot(fig)
 
 # =============================================================
-# PEOPLE ANALYTICS DASHBOARD — TAREA 2
-# ANÁLISIS DE SENTIMIENTO + INSIGHTS
+# DASHBOARD — ANÁLISIS DE SENTIMIENTO CLIMA LABORAL
 # =============================================================
 
 import streamlit as st
@@ -307,7 +306,7 @@ from collections import Counter
 import string
 
 # =============================================================
-# CONFIG
+# CONFIGURACIÓN
 # =============================================================
 
 st.set_page_config(
@@ -316,7 +315,7 @@ st.set_page_config(
 )
 
 st.title("📊 Dashboard de Clima Laboral")
-st.markdown("Análisis de sentimiento e insights por departamento")
+st.markdown("Análisis de sentimiento por departamento con insights automáticos")
 
 # =============================================================
 # CARGAR DATASET
@@ -324,119 +323,29 @@ st.markdown("Análisis de sentimiento e insights por departamento")
 
 df = pd.read_csv("tarea2_encuesta_clima.csv")
 
-# =============================================================
-# NORMALIZAR COLUMNAS
-# =============================================================
-
 df.columns = df.columns.str.lower()
 
-# Cambia estos nombres SOLO si en tu CSV son distintos
 col_departamento = "departamento"
 col_comentario = "comentario"
 col_sentimiento = "sentimiento_real"
 
-# =============================================================
-# KPIs
-# =============================================================
-
-st.header("📌 Resumen General")
-
-total = len(df)
-
-positivos = len(df[df[col_sentimiento].str.lower() == "positivo"])
-negativos = len(df[df[col_sentimiento].str.lower() == "negativo"])
-neutros = len(df[df[col_sentimiento].str.lower() == "neutro"])
-
-c1, c2, c3, c4 = st.columns(4)
-
-c1.metric("Total comentarios", total)
-c2.metric("😊 Positivos", positivos)
-c3.metric("😐 Neutros", neutros)
-c4.metric("😡 Negativos", negativos)
+df[col_sentimiento] = df[col_sentimiento].str.lower()
+df[col_departamento] = df[col_departamento].astype(str)
 
 # =============================================================
-# GRAFICO GENERAL
-# =============================================================
-
-st.header("📈 Distribución General de Sentimientos")
-
-conteo = df[col_sentimiento].value_counts()
-
-fig1, ax1 = plt.subplots(figsize=(6,4))
-
-ax1.bar(
-    conteo.index,
-    conteo.values
-)
-
-ax1.set_title("Cantidad de comentarios por sentimiento")
-ax1.set_ylabel("Cantidad")
-
-st.pyplot(fig1)
-
-# =============================================================
-# SENTIMIENTO POR DEPARTAMENTO
-# =============================================================
-
-st.header("🏢 Sentimiento por Departamento")
-
-tabla_dep = pd.crosstab(
-    df[col_departamento],
-    df[col_sentimiento],
-    normalize="index"
-) * 100
-
-fig2, ax2 = plt.subplots(figsize=(10,6))
-
-tabla_dep.plot(
-    kind="bar",
-    stacked=True,
-    ax=ax2
-)
-
-ax2.set_title("Porcentaje de sentimientos por departamento")
-ax2.set_ylabel("%")
-ax2.legend(title="Sentimiento")
-
-st.pyplot(fig2)
-
-# =============================================================
-# TOP DEPARTAMENTOS NEGATIVOS
-# =============================================================
-
-st.header("⚠️ Departamentos con más comentarios negativos")
-
-negativos_dep = (
-    df[df[col_sentimiento].str.lower() == "negativo"]
-    [col_departamento]
-    .value_counts()
-)
-
-fig3, ax3 = plt.subplots(figsize=(8,5))
-
-ax3.bar(
-    negativos_dep.index,
-    negativos_dep.values
-)
-
-ax3.set_title("Comentarios negativos por departamento")
-ax3.set_ylabel("Cantidad")
-
-st.pyplot(fig3)
-
-# =============================================================
-# LIMPIEZA DE PALABRAS
+# STOPWORDS
 # =============================================================
 
 stopwords = {
-    "de", "la", "el", "y", "en", "que", "los", "las",
-    "un", "una", "con", "por", "para", "del", "al",
-    "muy", "me", "mi", "es", "hay", "se", "más",
-    "todo", "todos", "porque"
+    "de", "la", "el", "y", "en", "que", "los", "las", "un", "una",
+    "con", "por", "para", "del", "al", "muy", "me", "mi", "es",
+    "hay", "se", "más", "mas", "todo", "todos", "porque", "pero",
+    "como", "son", "sin", "las", "los", "este", "esta", "eso",
+    "ser", "fue", "han", "ha", "lo", "su", "sus", "nos", "también",
+    "tambien", "cada", "aunque", "cuando", "sobre", "entre"
 }
 
-def limpiar(texto):
-
+def limpiar_palabras(texto):
     texto = str(texto).lower()
 
     for p in string.punctuation:
@@ -451,96 +360,267 @@ def limpiar(texto):
 
     return palabras
 
+def obtener_top_palabras(dataframe, sentimiento, top_n=10):
+    comentarios = dataframe[dataframe[col_sentimiento] == sentimiento][col_comentario]
+
+    palabras = []
+
+    for comentario in comentarios:
+        palabras.extend(limpiar_palabras(comentario))
+
+    return Counter(palabras).most_common(top_n)
+
+def grafico_barras_horizontal(data, titulo, xlabel):
+    palabras = [x[0] for x in data]
+    frecuencias = [x[1] for x in data]
+
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+
+    ax.barh(palabras, frecuencias)
+    ax.set_title(titulo, fontsize=12)
+    ax.set_xlabel(xlabel)
+    ax.invert_yaxis()
+
+    plt.tight_layout()
+
+    return fig
+
 # =============================================================
-# PALABRAS NEGATIVAS
+# KPIs GENERALES
 # =============================================================
 
-st.header("🧠 Palabras más frecuentes en comentarios negativos")
+st.header("📌 Resumen general")
 
-comentarios_neg = df[
-    df[col_sentimiento].str.lower() == "negativo"
-][col_comentario]
+total = len(df)
+positivos = len(df[df[col_sentimiento] == "positivo"])
+negativos = len(df[df[col_sentimiento] == "negativo"])
+neutros = len(df[df[col_sentimiento] == "neutro"])
 
-palabras_neg = []
+c1, c2, c3, c4 = st.columns(4)
 
-for texto in comentarios_neg:
-    palabras_neg.extend(limpiar(texto))
+c1.metric("Total comentarios", total)
+c2.metric("😊 Positivos", positivos)
+c3.metric("😐 Neutros", neutros)
+c4.metric("😡 Negativos", negativos)
 
-top_neg = Counter(palabras_neg).most_common(10)
+# =============================================================
+# DISTRIBUCIÓN GENERAL
+# =============================================================
 
-pal_df = pd.DataFrame(top_neg, columns=["Palabra", "Frecuencia"])
+st.header("📈 Distribución general de sentimientos")
 
-fig4, ax4 = plt.subplots(figsize=(10,5))
+conteo_general = df[col_sentimiento].value_counts()
 
-ax4.bar(
-    pal_df["Palabra"],
-    pal_df["Frecuencia"]
+fig1, ax1 = plt.subplots(figsize=(6, 4))
+
+ax1.bar(conteo_general.index, conteo_general.values)
+ax1.set_title("Cantidad de comentarios por sentimiento")
+ax1.set_ylabel("Cantidad")
+
+plt.tight_layout()
+st.pyplot(fig1)
+
+# =============================================================
+# SENTIMIENTO POR DEPARTAMENTO
+# =============================================================
+
+st.header("🏢 Sentimiento por departamento")
+
+tabla_dep = pd.crosstab(
+    df[col_departamento],
+    df[col_sentimiento],
+    normalize="index"
+) * 100
+
+fig2, ax2 = plt.subplots(figsize=(12, 6))
+
+tabla_dep.plot(
+    kind="bar",
+    stacked=True,
+    ax=ax2
 )
 
-ax4.set_title("Top palabras negativas")
+ax2.set_title("Porcentaje de sentimientos por departamento")
+ax2.set_ylabel("Porcentaje")
+ax2.set_xlabel("Departamento")
+ax2.legend(title="Sentimiento", bbox_to_anchor=(1.02, 1), loc="upper left")
 
-st.pyplot(fig4)
+plt.xticks(rotation=35, ha="right")
+plt.tight_layout()
+
+st.pyplot(fig2)
 
 # =============================================================
-# INSIGHTS AUTOMÁTICOS
+# COMENTARIOS NEGATIVOS POR DEPARTAMENTO
 # =============================================================
 
-st.header("💡 Insights Automáticos")
+st.header("⚠️ Comentarios negativos por departamento")
 
-dep_mas_neg = negativos_dep.idxmax()
-
-st.success(
-    f"""
-    • El dataset contiene {total} comentarios.
-
-    • La mayoría de comentarios son POSITIVOS.
-
-    • El departamento con más comentarios negativos es:
-    {dep_mas_neg}.
-
-    • Los comentarios positivos mencionan temas como:
-    colaboración, apoyo y crecimiento.
-
-    • Las palabras negativas más frecuentes reflejan
-    estrés, ambiente competitivo y falta de colaboración.
-    """
+negativos_dep = (
+    df[df[col_sentimiento] == "negativo"]
+    [col_departamento]
+    .value_counts()
 )
 
+fig3, ax3 = plt.subplots(figsize=(10, 5))
+
+ax3.barh(negativos_dep.index, negativos_dep.values)
+ax3.set_title("Cantidad de comentarios negativos por departamento")
+ax3.set_xlabel("Cantidad de comentarios negativos")
+ax3.invert_yaxis()
+
+plt.tight_layout()
+
+st.pyplot(fig3)
+
 # =============================================================
-# FILTRO POR DEPARTAMENTO
+# SELECTOR DE DEPARTAMENTO
 # =============================================================
 
-st.header("🔎 Explorar comentarios por departamento")
+st.header("🔎 Análisis detallado por departamento")
 
-departamento = st.selectbox(
+departamento_seleccionado = st.selectbox(
     "Selecciona un departamento",
-    df[col_departamento].unique()
+    sorted(df[col_departamento].unique())
 )
 
-df_dep = df[df[col_departamento] == departamento]
+df_dep = df[df[col_departamento] == departamento_seleccionado]
 
-st.write(df_dep[[col_sentimiento, col_comentario]])
+total_dep = len(df_dep)
+pos_dep = len(df_dep[df_dep[col_sentimiento] == "positivo"])
+neg_dep = len(df_dep[df_dep[col_sentimiento] == "negativo"])
+neu_dep = len(df_dep[df_dep[col_sentimiento] == "neutro"])
+
+porc_pos = round((pos_dep / total_dep) * 100, 1)
+porc_neg = round((neg_dep / total_dep) * 100, 1)
+porc_neu = round((neu_dep / total_dep) * 100, 1)
+
+d1, d2, d3, d4 = st.columns(4)
+
+d1.metric("Total comentarios", total_dep)
+d2.metric("😊 Positivos", f"{porc_pos}%")
+d3.metric("😐 Neutros", f"{porc_neu}%")
+d4.metric("😡 Negativos", f"{porc_neg}%")
 
 # =============================================================
-# CONCLUSIÓN
+# GRÁFICAS DE PALABRAS POR DEPARTAMENTO
 # =============================================================
 
-st.header("📝 Conclusión")
+st.subheader(f"🧠 Palabras más frecuentes en {departamento_seleccionado}")
+
+top_positivas = obtener_top_palabras(df_dep, "positivo", 10)
+top_negativas = obtener_top_palabras(df_dep, "negativo", 10)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("### 😊 Palabras en comentarios positivos")
+
+    if top_positivas:
+        fig_pos = grafico_barras_horizontal(
+            top_positivas,
+            "Top palabras positivas",
+            "Frecuencia"
+        )
+        st.pyplot(fig_pos)
+    else:
+        st.info("No hay comentarios positivos para este departamento.")
+
+with col2:
+    st.markdown("### 😡 Palabras en comentarios negativos")
+
+    if top_negativas:
+        fig_neg = grafico_barras_horizontal(
+            top_negativas,
+            "Top palabras negativas",
+            "Frecuencia"
+        )
+        st.pyplot(fig_neg)
+    else:
+        st.info("No hay comentarios negativos para este departamento.")
+
+# =============================================================
+# INSIGHTS AUTOMÁTICOS POR DEPARTAMENTO
+# =============================================================
+
+st.subheader("💡 Insights del departamento seleccionado")
+
+if porc_neg >= 40:
+    nivel_riesgo = "alto"
+    mensaje_riesgo = "Este departamento presenta una proporción alta de comentarios negativos, por lo que podría requerir una revisión prioritaria del clima laboral."
+elif porc_neg >= 25:
+    nivel_riesgo = "medio"
+    mensaje_riesgo = "Este departamento presenta algunos focos de alerta que podrían analizarse con mayor detalle."
+else:
+    nivel_riesgo = "bajo"
+    mensaje_riesgo = "Este departamento presenta un nivel bajo de comentarios negativos en comparación con el total de respuestas."
+
+palabras_pos_txt = ", ".join([x[0] for x in top_positivas[:5]]) if top_positivas else "no se identificaron palabras positivas frecuentes"
+palabras_neg_txt = ", ".join([x[0] for x in top_negativas[:5]]) if top_negativas else "no se identificaron palabras negativas frecuentes"
 
 st.info(
+    f"""
+    En el departamento de **{departamento_seleccionado}** se analizaron **{total_dep} comentarios**.
+
+    El **{porc_pos}%** de los comentarios son positivos, el **{porc_neu}%** son neutros y el **{porc_neg}%** son negativos.
+
+    Las palabras positivas más frecuentes son: **{palabras_pos_txt}**.
+
+    Las palabras negativas más frecuentes son: **{palabras_neg_txt}**.
+
+    Nivel de alerta del departamento: **{nivel_riesgo.upper()}**.
+
+    {mensaje_riesgo}
     """
-    El análisis muestra que el clima laboral general es
-    predominantemente positivo; sin embargo, ciertos
-    departamentos presentan una mayor concentración de
-    comentarios negativos.
+)
 
-    Los principales factores asociados a los comentarios
-    negativos son estrés, ambiente competitivo y problemas
-    de colaboración.
+# =============================================================
+# COMENTARIOS REALES
+# =============================================================
 
-    Esto permite identificar oportunidades de mejora en
-    cultura organizacional, comunicación interna y gestión
-    del bienestar laboral.
+st.subheader("📝 Comentarios reales del departamento")
+
+tab1, tab2, tab3 = st.tabs(["😊 Positivos", "😐 Neutros", "😡 Negativos"])
+
+with tab1:
+    comentarios_pos = df_dep[df_dep[col_sentimiento] == "positivo"][[col_comentario]]
+
+    if len(comentarios_pos) > 0:
+        st.dataframe(comentarios_pos, use_container_width=True)
+    else:
+        st.info("No hay comentarios positivos.")
+
+with tab2:
+    comentarios_neu = df_dep[df_dep[col_sentimiento] == "neutro"][[col_comentario]]
+
+    if len(comentarios_neu) > 0:
+        st.dataframe(comentarios_neu, use_container_width=True)
+    else:
+        st.info("No hay comentarios neutros.")
+
+with tab3:
+    comentarios_neg = df_dep[df_dep[col_sentimiento] == "negativo"][[col_comentario]]
+
+    if len(comentarios_neg) > 0:
+        st.dataframe(comentarios_neg, use_container_width=True)
+    else:
+        st.info("No hay comentarios negativos.")
+
+# =============================================================
+# CONCLUSIÓN GENERAL
+# =============================================================
+
+st.header("📝 Conclusión general")
+
+st.success(
+    """
+    El análisis muestra que el clima laboral general tiene una tendencia positiva,
+    pero algunos departamentos concentran una mayor proporción de comentarios negativos.
+
+    El análisis por departamento permite identificar no solo cuántos comentarios son
+    positivos o negativos, sino también qué palabras se repiten con mayor frecuencia.
+    Esto ayuda a interpretar mejor los posibles factores detrás del clima laboral,
+    como colaboración, ambiente, crecimiento, estrés o comunicación.
     """
 )
 
