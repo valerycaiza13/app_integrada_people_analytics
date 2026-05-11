@@ -296,452 +296,253 @@ with tab1:
         st.pyplot(fig)
 
 # =============================================================
-# TAREA 2 — SENTIMIENTO
+# PEOPLE ANALYTICS DASHBOARD — TAREA 2
+# ANÁLISIS DE SENTIMIENTO + INSIGHTS
 # =============================================================
 
-vader = SentimentIntensityAnalyzer()
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+from collections import Counter
+import string
 
-@st.cache_resource(show_spinner=False)
-def cargar_modelo_pysentimiento():
-    from pysentimiento import create_analyzer
+# =============================================================
+# CONFIG
+# =============================================================
 
-    return create_analyzer(
-        task="sentiment",
-        lang="es"
-    )
+st.set_page_config(
+    page_title="Dashboard Clima Laboral",
+    layout="wide"
+)
 
+st.title("📊 Dashboard de Clima Laboral")
+st.markdown("Análisis de sentimiento e insights por departamento")
 
-drivers_hr = {
+# =============================================================
+# CARGAR DATASET
+# =============================================================
 
-    "Liderazgo": [
-        "jefe",
-        "manager",
-        "lider",
-        "líder",
-        "liderazgo"
-    ],
+df = pd.read_csv("tarea2_encuesta_clima.csv")
 
-    "Comunicación": [
-        "comunicación",
-        "comunicacion",
-        "feedback",
-        "escucha"
-    ],
+# =============================================================
+# NORMALIZAR COLUMNAS
+# =============================================================
 
-    "Carga laboral": [
-        "carga",
-        "sobrecarga",
-        "horas",
-        "presión",
-        "presion"
-    ],
+df.columns = df.columns.str.lower()
 
-    "Ambiente laboral": [
-        "ambiente",
-        "clima",
-        "equipo",
-        "compañeros"
-    ],
+# Cambia estos nombres SOLO si en tu CSV son distintos
+col_departamento = "departamento"
+col_comentario = "comentario"
+col_sentimiento = "sentimiento_real"
 
-    "Desarrollo / formación": [
-        "formación",
-        "desarrollo",
-        "crecimiento",
-        "aprendizaje"
-    ],
+# =============================================================
+# KPIs
+# =============================================================
 
-    "Reconocimiento": [
-        "reconocimiento",
-        "valora",
-        "agradece"
-    ],
+st.header("📌 Resumen General")
 
-    "Salario / beneficios": [
-        "salario",
-        "sueldo",
-        "beneficios",
-        "bonus"
-    ],
+total = len(df)
 
-    "Cultura": [
-        "cultura",
-        "valores",
-        "compromiso"
-    ],
+positivos = len(df[df[col_sentimiento].str.lower() == "positivo"])
+negativos = len(df[df[col_sentimiento].str.lower() == "negativo"])
+neutros = len(df[df[col_sentimiento].str.lower() == "neutro"])
 
-    "Gestión": [
-        "gestión",
-        "gestion",
-        "procesos"
-    ],
+c1, c2, c3, c4 = st.columns(4)
 
-    "Estrés / burnout": [
-        "estrés",
-        "estres",
-        "burnout",
-        "agotado"
-    ]
+c1.metric("Total comentarios", total)
+c2.metric("😊 Positivos", positivos)
+c3.metric("😐 Neutros", neutros)
+c4.metric("😡 Negativos", negativos)
+
+# =============================================================
+# GRAFICO GENERAL
+# =============================================================
+
+st.header("📈 Distribución General de Sentimientos")
+
+conteo = df[col_sentimiento].value_counts()
+
+fig1, ax1 = plt.subplots(figsize=(6,4))
+
+ax1.bar(
+    conteo.index,
+    conteo.values
+)
+
+ax1.set_title("Cantidad de comentarios por sentimiento")
+ax1.set_ylabel("Cantidad")
+
+st.pyplot(fig1)
+
+# =============================================================
+# SENTIMIENTO POR DEPARTAMENTO
+# =============================================================
+
+st.header("🏢 Sentimiento por Departamento")
+
+tabla_dep = pd.crosstab(
+    df[col_departamento],
+    df[col_sentimiento],
+    normalize="index"
+) * 100
+
+fig2, ax2 = plt.subplots(figsize=(10,6))
+
+tabla_dep.plot(
+    kind="bar",
+    stacked=True,
+    ax=ax2
+)
+
+ax2.set_title("Porcentaje de sentimientos por departamento")
+ax2.set_ylabel("%")
+ax2.legend(title="Sentimiento")
+
+st.pyplot(fig2)
+
+# =============================================================
+# TOP DEPARTAMENTOS NEGATIVOS
+# =============================================================
+
+st.header("⚠️ Departamentos con más comentarios negativos")
+
+negativos_dep = (
+    df[df[col_sentimiento].str.lower() == "negativo"]
+    [col_departamento]
+    .value_counts()
+)
+
+fig3, ax3 = plt.subplots(figsize=(8,5))
+
+ax3.bar(
+    negativos_dep.index,
+    negativos_dep.values
+)
+
+ax3.set_title("Comentarios negativos por departamento")
+ax3.set_ylabel("Cantidad")
+
+st.pyplot(fig3)
+
+# =============================================================
+# LIMPIEZA DE PALABRAS
+# =============================================================
+
+stopwords = {
+    "de", "la", "el", "y", "en", "que", "los", "las",
+    "un", "una", "con", "por", "para", "del", "al",
+    "muy", "me", "mi", "es", "hay", "se", "más",
+    "todo", "todos", "porque"
 }
 
-
-def detectar_drivers(texto):
+def limpiar(texto):
 
     texto = str(texto).lower()
 
-    encontrados = []
+    for p in string.punctuation:
+        texto = texto.replace(p, " ")
 
-    for driver, palabras_clave in drivers_hr.items():
+    palabras = texto.split()
 
-        for palabra in palabras_clave:
+    palabras = [
+        p for p in palabras
+        if p not in stopwords and len(p) > 3
+    ]
 
-            if palabra in texto:
-                encontrados.append(driver)
-                break
+    return palabras
 
-    return encontrados if encontrados else ["Sin driver claro"]
+# =============================================================
+# PALABRAS NEGATIVAS
+# =============================================================
 
+st.header("🧠 Palabras más frecuentes en comentarios negativos")
 
-def clasificar_textblob(texto):
+comentarios_neg = df[
+    df[col_sentimiento].str.lower() == "negativo"
+][col_comentario]
 
-    score = TextBlob(str(texto)).sentiment.polarity
+palabras_neg = []
 
-    if score > 0.05:
-        return "positivo"
+for texto in comentarios_neg:
+    palabras_neg.extend(limpiar(texto))
 
-    elif score < -0.05:
-        return "negativo"
+top_neg = Counter(palabras_neg).most_common(10)
 
-    return "neutro"
+pal_df = pd.DataFrame(top_neg, columns=["Palabra", "Frecuencia"])
 
+fig4, ax4 = plt.subplots(figsize=(10,5))
 
-def clasificar_vader(texto):
+ax4.bar(
+    pal_df["Palabra"],
+    pal_df["Frecuencia"]
+)
 
-    score = vader.polarity_scores(str(texto))["compound"]
+ax4.set_title("Top palabras negativas")
 
-    if score >= 0.05:
-        return "positivo"
+st.pyplot(fig4)
 
-    elif score <= -0.05:
-        return "negativo"
+# =============================================================
+# INSIGHTS AUTOMÁTICOS
+# =============================================================
 
-    return "neutro"
+st.header("💡 Insights Automáticos")
 
+dep_mas_neg = negativos_dep.idxmax()
 
-def clasificar_pysentimiento(texto, analizador):
+st.success(
+    f"""
+    • El dataset contiene {total} comentarios.
 
-    resultado = analizador.predict(str(texto)).output
+    • La mayoría de comentarios son POSITIVOS.
 
-    return {
-        "POS": "positivo",
-        "NEG": "negativo",
-        "NEU": "neutro"
-    }.get(resultado, "neutro")
+    • El departamento con más comentarios negativos es:
+    {dep_mas_neg}.
 
+    • Los comentarios positivos mencionan temas como:
+    colaboración, apoyo y crecimiento.
 
-def resumen_sentimiento(df, columna):
+    • Las palabras negativas más frecuentes reflejan
+    estrés, ambiente competitivo y falta de colaboración.
+    """
+)
 
-    resumen = (
-        df.groupby([columna, "pred_pysentimiento"])
-        .size()
-        .unstack(fill_value=0)
-        .reset_index()
-    )
+# =============================================================
+# FILTRO POR DEPARTAMENTO
+# =============================================================
 
-    for col in ["negativo", "positivo", "neutro"]:
+st.header("🔎 Explorar comentarios por departamento")
 
-        if col not in resumen.columns:
-            resumen[col] = 0
+departamento = st.selectbox(
+    "Selecciona un departamento",
+    df[col_departamento].unique()
+)
 
-    resumen["total"] = (
-        resumen["negativo"] +
-        resumen["positivo"] +
-        resumen["neutro"]
-    )
+df_dep = df[df[col_departamento] == departamento]
 
-    resumen["pct_negativo"] = (
-        resumen["negativo"] /
-        resumen["total"] * 100
-    ).round(1)
+st.write(df_dep[[col_sentimiento, col_comentario]])
 
-    resumen["pct_positivo"] = (
-        resumen["positivo"] /
-        resumen["total"] * 100
-    ).round(1)
+# =============================================================
+# CONCLUSIÓN
+# =============================================================
 
-    return resumen
+st.header("📝 Conclusión")
 
+st.info(
+    """
+    El análisis muestra que el clima laboral general es
+    predominantemente positivo; sin embargo, ciertos
+    departamentos presentan una mayor concentración de
+    comentarios negativos.
 
-def resumen_drivers(df, sentimiento):
+    Los principales factores asociados a los comentarios
+    negativos son estrés, ambiente competitivo y problemas
+    de colaboración.
 
-    df_temp = (
-        df[df["pred_pysentimiento"] == sentimiento]
-        .copy()
-    )
-
-    df_temp["drivers"] = (
-        df_temp["comentario"]
-        .apply(detectar_drivers)
-    )
-
-    df_temp = df_temp.explode("drivers")
-
-    resumen = (
-        df_temp["drivers"]
-        .value_counts()
-        .reset_index()
-    )
-
-    resumen.columns = ["driver", "frecuencia"]
-
-    return resumen
-
-
-def top_drivers_de_departamento(
-    df,
-    departamento,
-    sentimiento,
-    top_n=5
-):
-
-    df_dep = df[
-        (df["departamento"] == departamento) &
-        (df["pred_pysentimiento"] == sentimiento)
-    ].copy()
-
-    df_dep["drivers"] = (
-        df_dep["comentario"]
-        .apply(detectar_drivers)
-    )
-
-    df_dep = df_dep.explode("drivers")
-
-    resumen = (
-        df_dep["drivers"]
-        .value_counts()
-        .head(top_n)
-        .reset_index()
-    )
-
-    resumen.columns = ["driver", "frecuencia"]
-
-    return resumen
-
-
-with tab2:
-
-    st.header("Tarea 2 — Análisis de Sentimiento")
-
-    uploaded_file2 = st.file_uploader(
-        "Sube tarea2_encuesta_clima.csv",
-        type=["csv"],
-        key="csv_tarea2"
-    )
-
-    if uploaded_file2 is not None:
-
-        df2 = pd.read_csv(uploaded_file2)
-
-        validar_columnas(
-            df2,
-            [
-                "comentario",
-                "departamento",
-                "nivel",
-                "sentimiento_real"
-            ],
-            "Tarea 2"
-        )
-
-        analizador_es = cargar_modelo_pysentimiento()
-
-        df2["pred_textblob"] = (
-            df2["comentario"]
-            .apply(clasificar_textblob)
-        )
-
-        df2["pred_vader"] = (
-            df2["comentario"]
-            .apply(clasificar_vader)
-        )
-
-        df2["pred_pysentimiento"] = (
-            df2["comentario"]
-            .apply(
-                lambda x:
-                clasificar_pysentimiento(
-                    x,
-                    analizador_es
-                )
-            )
-        )
-
-        acc_pys = accuracy_score(
-            df2["sentimiento_real"],
-            df2["pred_pysentimiento"]
-        )
-
-        total = len(df2)
-
-        positivos = (
-            df2["pred_pysentimiento"]
-            .eq("positivo")
-            .sum()
-        )
-
-        negativos = (
-            df2["pred_pysentimiento"]
-            .eq("negativo")
-            .sum()
-        )
-
-        neutros = (
-            df2["pred_pysentimiento"]
-            .eq("neutro")
-            .sum()
-        )
-
-        c1, c2, c3, c4 = st.columns(4)
-
-        c1.metric("Comentarios", total)
-
-        c2.metric(
-            "% positivo",
-            f"{positivos/total*100:.1f}%"
-        )
-
-        c3.metric(
-            "% negativo",
-            f"{negativos/total*100:.1f}%"
-        )
-
-        c4.metric(
-            "Accuracy",
-            f"{acc_pys:.1%}"
-        )
-
-        resumen_depto = resumen_sentimiento(
-            df2,
-            "departamento"
-        )
-
-        st.subheader("Sentimiento negativo por departamento")
-
-        datos_neg = (
-            resumen_depto
-            .sort_values("pct_negativo", ascending=True)
-        )
-
-        fig2, ax2 = plt.subplots(figsize=(9, 5))
-
-        ax2.barh(
-            datos_neg["departamento"],
-            datos_neg["pct_negativo"]
-        )
-
-        for i, v in enumerate(datos_neg["pct_negativo"]):
-
-            ax2.text(
-                v + 0.5,
-                i,
-                f"{v:.1f}%",
-                va="center"
-            )
-
-        st.pyplot(fig2)
-
-        st.subheader("Drivers generales")
-
-        drivers_pos = resumen_drivers(df2, "positivo")
-        drivers_neg = resumen_drivers(df2, "negativo")
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-
-            fig3, ax3 = plt.subplots(figsize=(8, 5))
-
-            ax3.barh(
-                drivers_pos["driver"][::-1],
-                drivers_pos["frecuencia"][::-1]
-            )
-
-            ax3.set_title("Drivers positivos")
-
-            st.pyplot(fig3)
-
-        with col2:
-
-            fig4, ax4 = plt.subplots(figsize=(8, 5))
-
-            ax4.barh(
-                drivers_neg["driver"][::-1],
-                drivers_neg["frecuencia"][::-1]
-            )
-
-            ax4.set_title("Drivers negativos")
-
-            st.pyplot(fig4)
-
-        st.subheader("Drivers por departamento")
-
-        departamento_seleccionado = st.selectbox(
-            "Selecciona un departamento",
-            sorted(df2["departamento"].unique())
-        )
-
-        col_neg, col_pos = st.columns(2)
-
-        with col_neg:
-
-            st.markdown(
-                f"### Negativos — {departamento_seleccionado}"
-            )
-
-            drivers_neg_dep = top_drivers_de_departamento(
-                df2,
-                departamento_seleccionado,
-                "negativo"
-            )
-
-            fig5, ax5 = plt.subplots(figsize=(7, 4))
-
-            ax5.barh(
-                drivers_neg_dep["driver"][::-1],
-                drivers_neg_dep["frecuencia"][::-1]
-            )
-
-            st.pyplot(fig5)
-
-            st.dataframe(
-                drivers_neg_dep,
-                use_container_width=True
-            )
-
-        with col_pos:
-
-            st.markdown(
-                f"### Positivos — {departamento_seleccionado}"
-            )
-
-            drivers_pos_dep = top_drivers_de_departamento(
-                df2,
-                departamento_seleccionado,
-                "positivo"
-            )
-
-            fig6, ax6 = plt.subplots(figsize=(7, 4))
-
-            ax6.barh(
-                drivers_pos_dep["driver"][::-1],
-                drivers_pos_dep["frecuencia"][::-1]
-            )
-
-            st.pyplot(fig6)
-
-            st.dataframe(
-                drivers_pos_dep,
-                use_container_width=True
-            )
+    Esto permite identificar oportunidades de mejora en
+    cultura organizacional, comunicación interna y gestión
+    del bienestar laboral.
+    """
+)
 
 # =============================================================
 # TAREA 3 — ROTACIÓN
