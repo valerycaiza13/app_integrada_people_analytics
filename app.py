@@ -27,6 +27,7 @@ st.markdown("""
 .insight-box {background-color: #F8FAFC; padding: 18px; border-left: 5px solid #2050F6; border-radius: 12px; margin-top: 10px; margin-bottom: 15px;}
 .positive-box {background-color: #ECFDF3; padding: 15px; border-left: 5px solid #22C55E; border-radius: 12px;}
 .warning-box {background-color: #FFF7ED; padding: 15px; border-left: 5px solid #F97316; border-radius: 12px;}
+.summary-box {background-color: #F0F4FF; padding: 20px; border-left: 5px solid #6366F1; border-radius: 12px; margin-top: 10px; margin-bottom: 20px;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -226,6 +227,74 @@ def resumen_sentimiento(df, columna_grupo):
     resumen["pct_positivo"] = (resumen["positivo"] / resumen["total"] * 100).round(1)
     return resumen
 
+
+# =============================================================
+# FUNCIÓN: RESUMEN DE HALLAZGOS PRINCIPALES (TAREA 2)
+# =============================================================
+
+def generar_resumen_encuesta(df, resumen_depto, resumen_nivel,
+                              depto_critico, depto_fuerte, nivel_critico,
+                              acc_pys, pct_pos, pct_neg, pct_neu):
+    total = len(df)
+
+    # --- Distribución general ---
+    distribucion = (
+        f"De {total} comentarios analizados, el {pct_pos:.1f}% son positivos, "
+        f"{pct_neg:.1f}% negativos y {pct_neu:.1f}% neutros."
+    )
+
+    # --- Departamento crítico y fuerte ---
+    dept_insight = (
+        f"El departamento con mayor sentimiento negativo es '{depto_critico['departamento']}' "
+        f"({depto_critico['pct_negativo']:.1f}% negativo), mientras que "
+        f"'{depto_fuerte['departamento']}' destaca como el más positivo "
+        f"({depto_fuerte['pct_positivo']:.1f}% positivo)."
+    )
+
+    # --- Nivel más sensible ---
+    nivel_insight = (
+        f"El nivel organizacional más sensible es '{nivel_critico['nivel']}', "
+        f"con {nivel_critico['pct_negativo']:.1f}% de comentarios negativos."
+    )
+
+    # --- Alerta de polarización entre departamentos ---
+    max_neg = resumen_depto["pct_negativo"].max()
+    min_neg = resumen_depto["pct_negativo"].min()
+    brecha = max_neg - min_neg
+    if brecha > 30:
+        alerta = (
+            f"⚠️ Existe una brecha de {brecha:.1f} puntos porcentuales entre "
+            f"el departamento más y menos crítico, lo que indica una polarización "
+            f"significativa en el clima laboral."
+        )
+    elif brecha > 15:
+        alerta = (
+            f"📌 Hay una brecha moderada de {brecha:.1f} pp entre departamentos. "
+            f"Se recomienda monitoreo diferenciado por área."
+        )
+    else:
+        alerta = "✅ El clima laboral es relativamente homogéneo entre departamentos."
+
+    # --- Nota sobre confianza del modelo ---
+    if acc_pys >= 0.80:
+        modelo_nota = (
+            f"El modelo pysentimiento alcanzó una precisión de {acc_pys:.1%}, "
+            f"considerada alta para NLP en español."
+        )
+    elif acc_pys >= 0.65:
+        modelo_nota = (
+            f"El modelo pysentimiento obtuvo {acc_pys:.1%} de precisión. "
+            f"Resultados confiables con revisión puntual recomendada."
+        )
+    else:
+        modelo_nota = (
+            f"El modelo pysentimiento obtuvo {acc_pys:.1%} de precisión. "
+            f"Se recomienda revisar manualmente los casos negativos."
+        )
+
+    return distribucion, dept_insight, nivel_insight, alerta, modelo_nota
+
+
 with tab2:
     st.header("Tarea 2 — Análisis de Sentimiento en Encuestas de Clima")
     st.write("Análisis estratégico del clima laboral utilizando NLP en español para detectar focos de atención, drivers emocionales y oportunidades de mejora.")
@@ -253,22 +322,45 @@ with tab2:
         depto_critico = resumen_depto.sort_values("pct_negativo", ascending=False).iloc[0]
         depto_fuerte = resumen_depto.sort_values("pct_positivo", ascending=False).iloc[0]
         nivel_critico = resumen_nivel.sort_values("pct_negativo", ascending=False).iloc[0]
+
+        # --- Métricas principales ---
         c1, c2, c3, c4, c5 = st.columns(5)
         c1.metric("Comentarios analizados", total)
         c2.metric("% positivo", f"{pct_pos:.1f}%", f"{positivos} comentarios")
         c3.metric("% negativo", f"{pct_neg:.1f}%", f"{negativos} comentarios")
         c4.metric("% neutro", f"{pct_neu:.1f}%", f"{neutros} comentarios")
         c5.metric("Accuracy NLP español", f"{acc_pys:.1%}")
+
+        # =============================================================
+        # RESUMEN DE HALLAZGOS PRINCIPALES — al inicio, antes de gráficas
+        # =============================================================
+        distribucion, dept_insight, nivel_insight, alerta, modelo_nota = generar_resumen_encuesta(
+            df2, resumen_depto, resumen_nivel,
+            depto_critico, depto_fuerte, nivel_critico,
+            acc_pys, pct_pos, pct_neg, pct_neu
+        )
+
+        st.markdown("### 📋 Resumen de hallazgos principales")
         st.markdown(f"""
-        <div class="insight-box"><b>Resumen ejecutivo:</b><br><br>
-        • El departamento con mejor percepción es <b>{depto_fuerte['departamento']}</b>, con <b>{depto_fuerte['pct_positivo']:.1f}%</b> de comentarios positivos.<br><br>
-        • El principal foco de atención es <b>{depto_critico['departamento']}</b>, donde el <b>{depto_critico['pct_negativo']:.1f}%</b> de comentarios presentan sentimiento negativo.<br><br>
-        • El nivel organizacional más sensible es <b>{nivel_critico['nivel']}</b>, con <b>{nivel_critico['pct_negativo']:.1f}%</b> de sentimiento negativo.<br><br>
-        • El modelo principal fue <b>pysentimiento</b>, porque está entrenado para español y obtuvo una precisión de <b>{acc_pys:.1%}</b>.
+        <div class="summary-box">
+        <b>📊 Distribución general:</b><br>{distribucion}<br><br>
+        <b>🏢 Focos por departamento:</b><br>{dept_insight}<br><br>
+        <b>👥 Nivel organizacional:</b><br>{nivel_insight}<br><br>
+        <b>🌡️ Diagnóstico de clima:</b><br>{alerta}<br><br>
+        <b>🤖 Confianza del análisis:</b><br>{modelo_nota}
         </div>
         """, unsafe_allow_html=True)
+
+        # =============================================================
+        # RESTO DEL ANÁLISIS — gráficas, tablas y recomendaciones
+        # =============================================================
+
         st.subheader("Comparación de modelos NLP")
-        comparacion = pd.DataFrame({"Modelo": ["TextBlob", "VADER", "pysentimiento"], "Enfoque": ["Léxico general", "Léxico social", "Modelo NLP en español"], "Accuracy": [round(acc_textblob * 100, 1), round(acc_vader * 100, 1), round(acc_pys * 100, 1)]}).sort_values("Accuracy", ascending=False)
+        comparacion = pd.DataFrame({
+            "Modelo": ["TextBlob", "VADER", "pysentimiento"],
+            "Enfoque": ["Léxico general", "Léxico social", "Modelo NLP en español"],
+            "Accuracy": [round(acc_textblob * 100, 1), round(acc_vader * 100, 1), round(acc_pys * 100, 1)]
+        }).sort_values("Accuracy", ascending=False)
         col_modelo1, col_modelo2 = st.columns([1, 1])
         with col_modelo1:
             st.dataframe(comparacion, use_container_width=True)
@@ -333,9 +425,9 @@ with tab2:
             st.write("Nivel organizacional")
             st.dataframe(resumen_nivel[["nivel", "negativo", "neutro", "positivo", "pct_negativo", "pct_positivo"]].sort_values("pct_negativo", ascending=False), use_container_width=True)
         st.subheader("Recomendaciones estratégicas para HR")
-        st.write(f"1. Priorizar sesiones de escucha activa en **{depto_critico['departamento']}**, donde se concentra el mayor sentimiento negativo.")
-        st.write(f"2. Diseñar acciones específicas para el nivel **{nivel_critico['nivel']}**, considerando carga laboral, liderazgo, comunicación y oportunidades de desarrollo.")
-        st.write(f"3. Replicar buenas prácticas del departamento **{depto_fuerte['departamento']}**, donde se observa la mayor proporción de comentarios positivos.")
+        st.write(f"1. Priorizar sesiones de escucha activa en {depto_critico['departamento']}, donde se concentra el mayor sentimiento negativo.")
+        st.write(f"2. Diseñar acciones específicas para el nivel {nivel_critico['nivel']}, considerando carga laboral, liderazgo, comunicación y oportunidades de desarrollo.")
+        st.write(f"3. Replicar buenas prácticas del departamento {depto_fuerte['departamento']}, donde se observa la mayor proporción de comentarios positivos.")
         st.write("4. Monitorear periódicamente los drivers negativos para detectar riesgos de burnout, desmotivación o problemas de comunicación interna.")
         with st.expander("Ver comentarios clasificados por los 3 modelos"):
             st.dataframe(df2[["departamento", "nivel", "comentario", "sentimiento_real", "pred_textblob", "pred_vader", "pred_pysentimiento"]], use_container_width=True)
@@ -411,7 +503,7 @@ with tab3:
             st.write("Rotación por departamento")
             st.dataframe(rotacion_departamento, use_container_width=True)
         st.subheader("Acciones de retención sugeridas")
-        st.write(f"1. Realizar entrevistas de salida estructuradas en **{depto_mayor['departamento']}** para entender causas recurrentes.")
+        st.write(f"1. Realizar entrevistas de salida estructuradas en {depto_mayor['departamento']} para entender causas recurrentes.")
         st.write("2. Revisar carga laboral, oportunidades de desarrollo y estilo de liderazgo en las áreas con mayor rotación.")
         st.write("3. Monitorear la tasa mensualmente para detectar picos tempranos y activar planes de retención antes de que el problema escale.")
         with st.expander("Ver dataset procesado"):
