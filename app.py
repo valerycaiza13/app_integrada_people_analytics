@@ -1,5 +1,8 @@
 # =============================================================
 # PEOPLE ANALYTICS DASHBOARD — 3 TAREAS INTEGRADAS
+# Tarea 1: Extracción de skills en CVs
+# Tarea 2: Análisis de sentimiento con pysentimiento + comparación VADER/TextBlob
+# Tarea 3: Rotación mensual
 # =============================================================
 
 import streamlit as st
@@ -21,279 +24,144 @@ st.caption("Dashboard ejecutivo para extracción de skills, análisis de sentimi
 
 st.markdown("""
 <style>
-.insight-box {
-    background-color: #F8FAFC;
-    padding: 18px;
-    border-left: 5px solid #2050F6;
-    border-radius: 12px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-}
-
-.positive-box {
-    background-color: #ECFDF3;
-    padding: 15px;
-    border-left: 5px solid #22C55E;
-    border-radius: 12px;
-}
-
-.warning-box {
-    background-color: #FFF7ED;
-    padding: 15px;
-    border-left: 5px solid #F97316;
-    border-radius: 12px;
-}
+.insight-box {background-color: #F8FAFC; padding: 18px; border-left: 5px solid #2050F6; border-radius: 12px; margin-top: 10px; margin-bottom: 15px;}
+.positive-box {background-color: #ECFDF3; padding: 15px; border-left: 5px solid #22C55E; border-radius: 12px;}
+.warning-box {background-color: #FFF7ED; padding: 15px; border-left: 5px solid #F97316; border-radius: 12px;}
 </style>
 """, unsafe_allow_html=True)
 
-tab1, tab2, tab3 = st.tabs([
-    "Tarea 1 · Skills en CVs",
-    "Tarea 2 · Sentimiento",
-    "Tarea 3 · Rotación"
-])
+tab1, tab2, tab3 = st.tabs(["Tarea 1 · Skills en CVs", "Tarea 2 · Sentimiento", "Tarea 3 · Rotación"])
 
 # =============================================================
-# FUNCIONES GENERALES
+# FUNCIONES AUXILIARES
 # =============================================================
 
 def validar_columnas(df, columnas_requeridas, nombre_dataset):
     faltantes = [col for col in columnas_requeridas if col not in df.columns]
-
     if faltantes:
-        st.error(
-            f"El archivo de {nombre_dataset} no tiene estas columnas: {faltantes}"
-        )
+        st.error(f"El archivo de {nombre_dataset} no tiene estas columnas requeridas: {faltantes}")
         st.stop()
 
 
 def mostrar_bar_labels(ax, formato="{:.0f}"):
     for p in ax.patches:
         valor = p.get_height()
-
-        ax.annotate(
-            formato.format(valor),
-            (p.get_x() + p.get_width() / 2., valor),
-            ha="center",
-            va="bottom",
-            fontsize=9,
-            xytext=(0, 3),
-            textcoords="offset points"
-        )
+        ax.annotate(formato.format(valor), (p.get_x() + p.get_width() / 2., valor), ha="center", va="bottom", fontsize=9, xytext=(0, 3), textcoords="offset points")
 
 # =============================================================
-# TAREA 1 — EXTRACCIÓN DE SKILLS
+# TAREA 1 — EXTRACCIÓN DE SKILLS EN CVs
 # =============================================================
 
 skills_dict = {
-    "python": ["python"],
-    "sql": ["sql"],
-    "excel": ["excel", "excel avanzado"],
-    "power bi": ["power bi", "powerbi"],
-    "tableau": ["tableau"],
-    "r": ["lenguaje r", " r "],
-    "pandas": ["pandas"],
-    "estadística": ["estadística", "estadistica"],
-    "machine learning": ["machine learning"],
-    "tensorflow": ["tensorflow"],
-    "scikit-learn": ["scikit-learn", "sklearn"],
-    "docker": ["docker"],
-    "git": ["git"],
-    "people analytics": ["people analytics"],
-    "hris": ["hris"],
-    "workday": ["workday"],
-    "ats": ["ats"],
-    "sourcing": ["sourcing"],
-    "linkedin recruiter": ["linkedin recruiter"],
-    "boolean search": ["boolean search"],
-    "entrevista por competencias": ["entrevista por competencias"],
-    "reclutamiento": ["reclutamiento"],
-    "gestión del talento": ["gestión del talento", "gestion del talento"],
+    "python": ["python"], "sql": ["sql"], "excel": ["excel", "excel avanzado"],
+    "power bi": ["power bi", "powerbi"], "tableau": ["tableau"], "r": ["lenguaje r", " r "],
+    "pandas": ["pandas"], "estadística": ["estadística", "estadistica"],
+    "machine learning": ["machine learning"], "tensorflow": ["tensorflow"],
+    "scikit-learn": ["scikit-learn", "sklearn"], "docker": ["docker"], "git": ["git"],
+    "people analytics": ["people analytics"], "hris": ["hris"], "workday": ["workday"],
+    "ats": ["ats"], "sourcing": ["sourcing"], "linkedin recruiter": ["linkedin recruiter"],
+    "boolean search": ["boolean search"], "entrevista por competencias": ["entrevista por competencias"],
+    "reclutamiento": ["reclutamiento"], "gestión del talento": ["gestión del talento", "gestion del talento"],
     "análisis predictivo": ["análisis predictivo", "analisis predictivo"],
-    "comunicación": ["comunicación", "comunicacion"],
-    "trabajo en equipo": ["trabajo en equipo"],
-    "liderazgo": ["liderazgo"],
-    "atención al detalle": ["atención al detalle", "atencion al detalle"]
+    "comunicación": ["comunicación", "comunicacion"], "trabajo en equipo": ["trabajo en equipo"],
+    "liderazgo": ["liderazgo"], "atención al detalle": ["atención al detalle", "atencion al detalle"]
 }
 
 requisitos = {
-    "Data Analyst": [
-        "python",
-        "sql",
-        "excel",
-        "power bi",
-        "tableau",
-        "estadística"
-    ],
-
-    "People Analytics Specialist": [
-        "people analytics",
-        "python",
-        "r",
-        "power bi",
-        "excel",
-        "análisis predictivo"
-    ],
-
-    "Machine Learning Engineer": [
-        "python",
-        "machine learning",
-        "tensorflow",
-        "scikit-learn",
-        "docker",
-        "git"
-    ],
-
-    "Recruiter Técnico": [
-        "sourcing",
-        "linkedin recruiter",
-        "boolean search",
-        "ats",
-        "entrevista por competencias",
-        "reclutamiento"
-    ],
-
-    "HR Business Partner": [
-        "gestión del talento",
-        "people analytics",
-        "hris",
-        "workday",
-        "excel",
-        "comunicación"
-    ]
+    "Data Analyst": ["python", "sql", "excel", "power bi", "tableau", "estadística"],
+    "People Analytics Specialist": ["people analytics", "python", "r", "power bi", "excel", "análisis predictivo"],
+    "Machine Learning Engineer": ["python", "machine learning", "tensorflow", "scikit-learn", "docker", "git"],
+    "Recruiter Técnico": ["sourcing", "linkedin recruiter", "boolean search", "ats", "entrevista por competencias", "reclutamiento"],
+    "HR Business Partner": ["gestión del talento", "people analytics", "hris", "workday", "excel", "comunicación"]
 }
 
 
 def extraer_skills(texto):
     texto = str(texto).lower()
-
     skills_encontradas = []
-
     for skill, variantes in skills_dict.items():
-
         for variante in variantes:
-
             patron = r"\b" + re.escape(variante.strip().lower()) + r"\b"
-
             if re.search(patron, texto):
                 skills_encontradas.append(skill)
                 break
-
     return skills_encontradas
 
 
 def calcular_match(row):
     puesto = row["puesto_target"]
-
     skills_cv = set(row["skills_detectadas"])
     skills_req = set(requisitos.get(puesto, []))
-
     encontradas = skills_cv.intersection(skills_req)
     faltantes = skills_req.difference(skills_cv)
-
-    match = round(
-        (len(encontradas) / len(skills_req)) * 100,
-        1
-    ) if skills_req else 0
-
-    return pd.Series({
-        "skills_requeridas": ", ".join(sorted(skills_req)),
-        "skills_encontradas_requeridas": ", ".join(sorted(encontradas)),
-        "skills_faltantes": ", ".join(sorted(faltantes)),
-        "porcentaje_match": match
-    })
+    match = round((len(encontradas) / len(skills_req)) * 100, 1) if skills_req else 0
+    return pd.Series({"skills_requeridas": ", ".join(sorted(skills_req)), "skills_encontradas_requeridas": ", ".join(sorted(encontradas)), "skills_faltantes": ", ".join(sorted(faltantes)), "porcentaje_match": match})
 
 
 def decision(match):
-
     if match >= 70:
         return "Preseleccionar"
-
     elif match >= 50:
         return "Revisar manualmente"
-
     else:
         return "No priorizar"
 
 
 with tab1:
-
-    st.header("Tarea 1 — Extracción de Skills en CVs")
-
-    uploaded_file1 = st.file_uploader(
-        "Sube el archivo tarea1_cvs.csv",
-        type=["csv"],
-        key="csv_tarea1"
-    )
-
+    st.header("Tarea 1 — Extracción de Skills en Currículums")
+    st.write("Automatiza la preselección detectando habilidades clave en CVs y comparándolas con los requisitos del cargo.")
+    uploaded_file1 = st.file_uploader("Sube el archivo tarea1_cvs.csv", type=["csv"], key="csv_tarea1")
     if uploaded_file1 is not None:
-
         df1 = pd.read_csv(uploaded_file1)
-
-        validar_columnas(
-            df1,
-            ["nombre", "puesto_target", "cv_texto"],
-            "Tarea 1"
-        )
-
+        validar_columnas(df1, ["nombre", "puesto_target", "cv_texto"], "Tarea 1")
         df1["skills_detectadas"] = df1["cv_texto"].apply(extraer_skills)
-
-        df1_resultado = pd.concat([
-            df1,
-            df1.apply(calcular_match, axis=1)
-        ], axis=1)
-
-        df1_resultado["decision_sugerida"] = (
-            df1_resultado["porcentaje_match"].apply(decision)
-        )
-
-        ranking = df1_resultado[
-            [
-                "nombre",
-                "puesto_target",
-                "porcentaje_match",
-                "decision_sugerida"
-            ]
-        ].sort_values("porcentaje_match", ascending=False)
-
-        c1, c2, c3 = st.columns(3)
-
-        c1.metric("Candidatos", len(df1_resultado))
-
-        c2.metric(
-            "Preseleccionados",
-            (df1_resultado["decision_sugerida"] == "Preseleccionar").sum()
-        )
-
-        c3.metric(
-            "Match promedio",
-            f"{df1_resultado['porcentaje_match'].mean():.1f}%"
-        )
-
-        st.subheader("Ranking de candidatos")
-
-        st.dataframe(ranking, use_container_width=True)
-
-        st.subheader("Skills más frecuentes")
-
+        df1_resultado = pd.concat([df1, df1.apply(calcular_match, axis=1)], axis=1)
+        df1_resultado["decision_sugerida"] = df1_resultado["porcentaje_match"].apply(decision)
         df_skills = df1_resultado.explode("skills_detectadas")
-
-        top_skills = (
-            df_skills["skills_detectadas"]
-            .value_counts()
-            .head(10)
-        )
-
-        fig, ax = plt.subplots(figsize=(8, 5))
-
-        ax.barh(
-            top_skills.index[::-1],
-            top_skills.values[::-1]
-        )
-
-        ax.set_xlabel("Frecuencia")
-        ax.set_title("Skills más frecuentes")
-
-        st.pyplot(fig)
+        ranking = df1_resultado[["nombre", "puesto_target", "porcentaje_match", "skills_encontradas_requeridas", "skills_faltantes", "decision_sugerida"]].sort_values("porcentaje_match", ascending=False)
+        skill_mas_frecuente = df_skills["skills_detectadas"].dropna().value_counts().idxmax()
+        mejor_candidato = ranking.iloc[0]
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Candidatos analizados", len(df1_resultado))
+        c2.metric("Preseleccionados", (df1_resultado["decision_sugerida"] == "Preseleccionar").sum())
+        c3.metric("Match promedio", f"{df1_resultado['porcentaje_match'].mean():.1f}%")
+        c4.metric("Skill más frecuente", skill_mas_frecuente)
+        st.markdown(f"""
+        <div class="insight-box"><b>Insight ejecutivo:</b><br>
+        El mejor match es <b>{mejor_candidato['nombre']}</b> para <b>{mejor_candidato['puesto_target']}</b>,
+        con <b>{mejor_candidato['porcentaje_match']}%</b> de coincidencia. Esta automatización permite priorizar candidatos,
+        detectar brechas de skills y reducir la revisión manual inicial.</div>
+        """, unsafe_allow_html=True)
+        st.subheader("Ranking de candidatos")
+        st.dataframe(ranking, use_container_width=True)
+        tabla_frecuencia = df_skills.groupby(["puesto_target", "skills_detectadas"]).size().reset_index(name="frecuencia").sort_values(["puesto_target", "frecuencia"], ascending=[True, False])
+        col_a, col_b = st.columns(2)
+        with col_a:
+            st.subheader("Top skills generales")
+            top_skills = df_skills["skills_detectadas"].value_counts().head(10)
+            fig, ax = plt.subplots(figsize=(8, 5))
+            ax.barh(top_skills.index[::-1], top_skills.values[::-1])
+            ax.set_xlabel("Frecuencia")
+            ax.set_title("Skills más frecuentes detectadas")
+            st.pyplot(fig)
+        with col_b:
+            st.subheader("Decisiones sugeridas")
+            decisiones = df1_resultado["decision_sugerida"].value_counts()
+            fig2, ax2 = plt.subplots(figsize=(8, 5))
+            ax2.bar(decisiones.index, decisiones.values)
+            ax2.set_ylabel("Número de candidatos")
+            ax2.set_title("Distribución de decisiones de preselección")
+            ax2.tick_params(axis="x", rotation=20)
+            mostrar_bar_labels(ax2)
+            st.pyplot(fig2)
+        st.subheader("Skills más frecuentes por perfil")
+        st.dataframe(tabla_frecuencia, use_container_width=True)
+        with st.expander("Ver dataset procesado"):
+            st.dataframe(df1_resultado, use_container_width=True)
+        st.download_button("Descargar ranking de candidatos", data=ranking.to_csv(index=False).encode("utf-8"), file_name="ranking_candidatos_por_match.csv", mime="text/csv")
+        st.download_button("Descargar skills frecuentes por perfil", data=tabla_frecuencia.to_csv(index=False).encode("utf-8"), file_name="tabla_skills_frecuentes_por_perfil.csv", mime="text/csv")
+    else:
+        st.info("Sube el archivo CSV de la Tarea 1 para iniciar el análisis.")
 
 # =============================================================
 # DASHBOARD — ANÁLISIS DE SENTIMIENTO CLIMA LABORAL
